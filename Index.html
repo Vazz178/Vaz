@@ -3,51 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaz</title>
+    <title>My Profile</title>
     <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #111;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Loading screen */
+        #loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            animation: fadeOut 3s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Profile Section */
+        #profile {
+            display: none;
             text-align: center;
         }
-        h1 {
-            font-size: 3em;
-            color: #6a0dad;
+
+        #profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
         }
-        .description {
-            font-size: 1.2em;
-            color: #32cd32;
+
+        #profile h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
-        .status {
-            font-size: 1.5em;
-            color: #ff4500;
+
+        #socials {
+            list-style-type: none;
+            padding: 0;
         }
-        .download-links a {
-            color: #00f;
+
+        #socials li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        #socials a {
             text-decoration: none;
-            font-size: 1.2em;
+            font-size: 1.5rem;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        #socials a:hover {
+            color: #007bff;
+        }
+
+        /* Loading Animation */
+        .dot {
+            font-size: 2rem;
+            display: inline-block;
+            animation: blink 1s step-end infinite;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% {
+                opacity: 0;
+            }
+            25%, 75% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Vaz</h1>
-    <p class="description">
-        VaztopiaPs is coming soon!
-    </p>
-    <p class="status">Server Status: Online</p>
-    <div class="download-links">
-        <p>Download Links:</p>
-        <p><a href="https://www.mediafire.com/file/99xylwpysecvgne/SpotyPS.txt/file" target="_blank">Download VHOST</a></p>
-        <p><a href="https://growssoft.cc/android.txt" target="_blank">Download PTunnel (Android)</a></p>
-        <p>Windows Version IPs:</p>
-        <p>
-            <a href="http://91.134.85.13/growtopia1.com" target="_blank">91.134.85.13 - growtopia1.com</a><br>
-            <a href="http://91.134.85.13/growtopia2.com" target="_blank">91.134.85.13 - growtopia2.com</a><br>
-            <a href="http://91.134.85.13/www.growtopia1.com" target="_blank">91.134.85.13 - www.growtopia1.com</a><br>
-            <a href="http://91.134.85.13/www.growtopia2.com" target="_blank">91.134.85.13 - www.growtopia2.com</a>
-        </p>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <span>Loading</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
     </div>
+
+    <!-- Profile Section -->
+    <div id="profile">
+        <img src="https://www.example.com/your-profile-pic.jpg" alt="Your Profile Picture">
+        <h1>Welcome to My Page!</h1>
+        <p>This page is about me. I'm a creator and lover of all things digital.</p>
+        <ul id="socials">
+            <li><a href="https://www.instagram.com/yourusername" target="_blank">Instagram</a></li>
+            <li><a href="https://www.tiktok.com/@yourusername" target="_blank">TikTok</a></li>
+        </ul>
+    </div>
+
+    <script>
+        // Simulate loading and then display the profile
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('profile').style.display = 'block';
+            }, 3000); // After 3 seconds
+        };
+    </script>
 </body>
-  </html>
-             
+    </html>
+    

@@ -1,211 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Personal Page with Feedback Chat</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-    font-family: 'Orbitron', sans-serif;
-    cursor: url('https://cur.cursors-4u.net/cursors/cur-13/cur1149.cur'), auto;
-  }
-  body {
-    background: linear-gradient(to bottom, #000000, #0a0a0a);
-    color: #fff;
-    overflow-x: hidden;
-  }
-  .glow {
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-  }
-  .loading-screen {
-    height: 100vh;
-    display: flex;
-    justify-content: center; align-items: center;
-    background: #000;
-    color: #0ff;
-    font-size: 3rem;
-    animation: fadein 1.5s ease-in;
-  }
-  .loading-dots::after {
-    content: ' .';
-    animation: dots 1.5s steps(3, end) infinite;
-  }
-  @keyframes dots {
-    0%, 20% { content: ' .'; }
-    40% { content: ' ..'; }
-    60% { content: ' ...'; }
-    100% { content: ' .'; }
-  }
-  @keyframes fadein {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .profile {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4rem 2rem;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #0a0a0a, #000);
-    animation: fadein 2s ease-in;
-    position: relative;
-  }
-  .profile img {
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #0ff;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 0 20px #0ff;
-  }
-  .profile h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  .profile p {
-    font-size: 1.2rem;
-    max-width: 700px;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-  }
-  .socials {
-    margin-bottom: 2rem;
-  }
-  .socials a {
-    color: #0ff;
-    font-size: 2.2rem;
-    margin: 0 1rem;
-    transition: transform 0.3s, color 0.3s;
-  }
-  .socials a:hover {
-    transform: scale(1.3);
-    color: #fff;
-  }
-  .donate-button {
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 10px;
-    background: #0ff;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-  .donate-button:hover {
-    background: #00cccc;
-    transform: scale(1.05);
-  }
-  #donate-popup, #development-msg, #feedback-popup {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: #111;
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 0 25px #0ff;
-    z-index: 100;
-    min-width: 320px;
-  }
-  #donate-popup input[type="number"],
-  #donate-popup select,
-  #feedback-popup input[type="email"],
-  #feedback-popup input[type="text"],
-  #feedback-popup textarea {
-    padding: 0.6rem;
-    font-size: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    width: 80%;
-    background: #000;
-    color: #0ff;
-    border: 1px solid #0ff;
-    border-radius: 8px;
-  }
-  #donate-popup button,
-  #development-msg button,
-  #feedback-popup button {
-    margin-top: 1rem;
-    padding: 0.6rem 1.4rem;
-    font-size: 1rem;
-    border: none;
-    background: #0ff;
-    color: #000;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  #donate-popup button:hover,
-  #development-msg button:hover,
-  #feedback-popup button:hover {
-    background: #00cccc;
-  }
-  footer {
-    text-align: center;
-    padding: 2rem;
-    font-size: 0.9rem;
-    color: #444;
-  }
-  .badge {
-    margin-top: 2rem;
-    font-size: 0.95rem;
-    background: #111;
-    padding: 0.5rem 1.2rem;
-    border-radius: 6px;
-    border: 1px solid #0ff;
-    display: inline-block;
-    color: #0ff;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 5px #0ff; }
-    50% { box-shadow: 0 0 15px #0ff; }
-    100% { box-shadow: 0 0 5px #0ff; }
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vaz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+      cursor: url('https://cur.cursors-4u.net/cursors/cur-13/cur1149.cur'), auto;
+    }
+    body {
+      background: linear-gradient(to bottom, #000000, #0a0a0a);
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .glow {
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+    .loading-screen {
+      height: 100vh;
+      display: flex;
+      justify-content: center; align-items: center;
+      background: #000;
+      color: #0ff;
+      font-size: 3rem;
+      animation: fadein 1.5s ease-in;
+    }
+    .loading-dots::after {
+      content: ' .';
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+    @keyframes dots {
+      0%, 20% { content: ' .'; }
+      40% { content: ' ..'; }
+      60% { content: ' ...'; }
+      100% { content: ' .'; }
+    }
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .profile {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 100vh;
+      animation: fadein 2s ease-in;
+    }
+    .profile img {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #0ff;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 20px #0ff;
+    }
+    .profile h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .profile p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    .socials {
+      margin-bottom: 2rem;
+    }
+    .socials a {
+      color: #0ff;
+      font-size: 2.2rem;
+      margin: 0 1rem;
+      transition: transform 0.3s, color 0.3s;
+    }
+    .socials a:hover {
+      transform: scale(1.3);
+      color: #fff;
+    }
+    .donate-button {
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .donate-button:hover {
+      background: #00cccc;
+      transform: scale(1.05);
+    }
+    #donate-popup, #development-msg {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #111;
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 25px #0ff;
+      z-index: 100;
+      min-width: 320px;
+    }
+    #donate-popup input[type="number"],
+    #donate-popup select {
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      width: 80%;
+      background: #000;
+      color: #0ff;
+      border: 1px solid #0ff;
+      border-radius: 8px;
+    }
+    #donate-popup button,
+    #development-msg button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.4rem;
+      font-size: 1rem;
+      border: none;
+      background: #0ff;
+      color: #000;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #donate-popup button:hover,
+    #development-msg button:hover {
+      background: #00cccc;
+    }
 
-  /* Message icon fixed bottom right */
-  #msg-icon {
-    position: fixed;
-    bottom: 20px; right: 20px;
-    background: #0ff;
-    color: #000;
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    font-size: 28px;
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer;
-    box-shadow: 0 0 15px #0ff;
-    z-index: 101;
-    transition: background 0.3s ease;
-  }
-  #msg-icon:hover {
-    background: #00cccc;
-  }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .badge {
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      background: #111;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      border: 1px solid #0ff;
+      display: inline-block;
+      color: #0ff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 5px #0ff; }
+      50% { box-shadow: 0 0 15px #0ff; }
+      100% { box-shadow: 0 0 5px #0ff; }
+    }
 
-  /* Feedback popup styles */
-  #feedback-popup form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #feedback-popup textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-  #feedback-popup .info-text {
-    margin-top: 1rem;
-    color: #0ff;
-    font-style: italic;
-  }
-</style>
+    /* Mailbox styles */
+    #mailbox {
+      margin-top: 3rem;
+      max-width: 600px;
+      width: 100%;
+    }
+    #mailbox input,
+    #mailbox textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #0ff;
+      background: #000;
+      color: #0ff;
+      resize: vertical;
+    }
+    #mailbox button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.2rem;
+      background: #0ff;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #mailbox button:hover {
+      background: #00cccc;
+    }
+  </style>
 </head>
 <body>
 
@@ -216,16 +205,28 @@
   <div class="profile" id="profile">
     <img src="https://cdn.discordapp.com/attachments/1272251376520527948/1402689854978134026/Neymar_Jr.jpg?ex=6894d43a&is=689382ba&hm=f74a8d68d2f1b7de3bb8ba1323261728cda8455dc4a7a758111bf72c43a46f20&" alt="Profile Picture" />
     <h1 class="glow">Vaz</h1>
-    <p class="glow">Jesus chose you,
-and He would choose you again and again</p>
+    <p class="glow">Jesus chose you,<br>and He would choose you again and again.</p>
 
     <div class="socials">
-      <a href="tiktok.com/@savuyy" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://youtube.com/@cvarzz?si=dzx8Ef7swaQgeH3r" target="_blank"><i class="fab fa-youtube"></i></a> 
+      <a href="https://tiktok.com/@savuyy" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://youtube.com/@cvarzz?si=dzx8Ef7swaQgeH3r" target="_blank"><i class="fab fa-youtube"></i></a>
     </div>
 
     <button class="donate-button" onclick="openDonatePopup()">Donate ♥️</button>
-    <div class="badge"></div>
+
+    <!-- Inline Mailbox Form -->
+    <div id="mailbox">
+      <h3 class="glow">Send a Message</h3>
+      <form id="mailboxForm" onsubmit="sendToGmail(event)">
+        <input type="text" id="userName" placeholder="Your Name" required />
+        <input type="email" id="userEmail" placeholder="Your Gmail" required />
+        <textarea id="userMessage" placeholder="Your message..." rows="5" required></textarea>
+        <button type="submit">Send</button>
+        <p class="glow" id="feedbackSuccess" style="margin-top: 1rem; display:none;">Vaz will answer soon. Thank you!</p>
+      </form>
+    </div>
+
+    <div class="badge">Still in development 💻</div>
   </div>
 
   <div id="donate-popup">
@@ -233,7 +234,7 @@ and He would choose you again and again</p>
     <input type="number" id="donationAmount" placeholder="Amount" min="1" />
     <select id="currency">
       <option value="$">$ (USD)</option>
-      <option value="€‚¬">€‚¬ (EUR)</option>
+      <option value="€">€ (EUR)</option>
       <option value="£">£ (GBP)</option>
       <option value="¥">¥ (JPY)</option>
     </select><br />
@@ -246,35 +247,12 @@ and He would choose you again and again</p>
     <button onclick="closeDevMsg()">OK</button>
   </div>
 
-  <!-- Message icon -->
-  <div id="msg-icon" title="Feedback/Chat" onclick="toggleFeedbackPopup()">
-    <i class="fas fa-comment-alt"></i>
-  </div>
-
-  <!-- Feedback popup -->
-  <div id="feedback-popup">
-    <h3>Send us a message</h3>
-    <form id="feedbackForm">
-      <input type="email" id="userEmail" placeholder="Your Gmail" required />
-      <input type="text" id="userName" placeholder="Your Name" required />
-      <textarea id="userMessage" placeholder="Your message..." required></textarea>
-      <button type="submit">Send</button>
-      <button type="button" onclick="closeFeedbackPopup()" style="margin-top:10px;background:#333;color:#0ff;">Cancel</button>
-    </form>
-    <p class="info-text" id="feedbackInfo" style="display:none;">Vaz will answer soon. Thank you!</p>
-  </div>
-
   <footer>
     © 2025 Vaz. All rights reserved.
   </footer>
 
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS - You need to sign up and get your own user ID
-    emailjs.init("s_CAJ6uDO_aZZSIT1");
-
-    // Loading screen timeout
+    // Load screen
     setTimeout(() => {
       document.getElementById('loading').style.display = 'none';
       document.getElementById('profile').style.display = 'flex';
@@ -287,72 +265,34 @@ and He would choose you again and again</p>
     function closeDonatePopup() {
       document.getElementById('donate-popup').style.display = 'none';
     }
+
     function confirmDonation() {
-      const amount = document.getElementById('donationAmount').value;
-      if(amount && amount > 0) {
-        closeDonatePopup();
-        document.getElementById('development-msg').style.display = 'block';
-      } else {
-        alert("Please enter a valid amount.");
-      }
+      closeDonatePopup();
+      document.getElementById('development-msg').style.display = 'block';
     }
     function closeDevMsg() {
       document.getElementById('development-msg').style.display = 'none';
     }
 
-    // Feedback popup toggle
-    function toggleFeedbackPopup() {
-      const popup = document.getElementById('feedback-popup');
-      if(popup.style.display === 'block') {
-        popup.style.display = 'none';
-        resetFeedbackForm();
-      } else {
-        popup.style.display = 'block';
-        document.getElementById('userEmail').focus();
-      }
-    }
-    function closeFeedbackPopup() {
-      document.getElementById('feedback-popup').style.display = 'none';
-      resetFeedbackForm();
-    }
-    function resetFeedbackForm() {
-      document.getElementById('feedbackForm').reset();
-      document.getElementById('feedbackInfo').style.display = 'none';
-    }
-
-    // Handle feedback form submit
-    document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+    // Send email via mailto
+    function sendToGmail(event) {
       event.preventDefault();
 
-      const email = document.getElementById('userEmail').value;
-      const name = document.getElementById('userName').value;
-      const message = document.getElementById('userMessage').value;
+      const name = document.getElementById("userName").value.trim();
+      const email = document.getElementById("userEmail").value.trim();
+      const message = document.getElementById("userMessage").value.trim();
 
-      if(!email || !name || !message) {
-        alert("Please fill all fields.");
-        return;
-      }
+      const body = `Name: ${name}%0DEmail: ${email}%0D%0DMessage:%0D${encodeURIComponent(message)}`;
+      const mailtoLink = `mailto:veixbella@gmail.com?subject=Message from ${name}&body=${body}`;
 
-      // Prepare template params for EmailJS
-      const templateParams = {
-        from_name: name,
-        from_email: email,
-        message: message,
-        to_email: 'veixbella@gmail.com' // your email to receive messages
-      };
+      // Show success text
+      const successText = document.getElementById("feedbackSuccess");
+      successText.style.display = "block";
 
-      // Send email via EmailJS service - replace with your service & template ids
-      emailjs.send('service_d9d7yvj', 'template_lbt6a3e', templateParams)
-        .then(function(response) {
-          // Show info text & reset form but keep popup open
-          document.getElementById('feedbackInfo').style.display = 'block';
-          document.getElementById('feedbackForm').style.display = 'none';
-        }, function(error) {
-          alert('Oops, something went wrong. Please try again later.');
-          console.error('EmailJS error:', error);
-        });
-    });
+      setTimeout(() => {
+        window.location.href = mailtoLink;
+      }, 1500); // Small delay to show message before redirect
+    }
   </script>
-
 </body>
 </html>

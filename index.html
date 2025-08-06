@@ -5,215 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            transition: opacity 1s ease-in-out;
-            background-image: linear-gradient(135deg, #6f8bb2, #56ccf2);
-        }
-
-        /* Loading screen */
-        #loading-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            animation: fadeOut 3s forwards;
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-
-        /* Profile Section */
-        #profile {
-            display: none;
-            text-align: center;
-            max-width: 800px;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s ease-out;
-        }
-
-        #profile img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin-bottom: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        }
-
-        #profile h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        #profile p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        #socials {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #socials li {
-            display: inline-block;
-        }
-
-        #socials a {
-            text-decoration: none;
-            font-size: 2rem;
-            color: #333;
-            transition: color 0.3s ease, transform 0.2s ease;
-        }
-
-        #socials a:hover {
-            color: #56ccf2;
-            transform: scale(1.2);
-        }
-
-        /* Cool timestamp in corner */
-        #last-updated {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1rem;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 8px 12px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            font-style: italic;
-        }
-
-        /* Email link styling */
-        #email-link {
-            font-size: 1.4rem;
-            color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        #email-link:hover {
-            color: #ff4081;
-        }
-
-        /* Loading Animation */
-        .dot {
-            font-size: 2.5rem;
-            display: inline-block;
-            animation: blink 1s step-end infinite;
-        }
-
-        .dot:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes blink {
-            0%, 50%, 100% {
-                opacity: 0;
-            }
-            25%, 75% {
-                opacity: 1;
-            }
-        }
-
-        /* Add Media Query for Smaller Screens */
-        @media screen and (max-width: 768px) {
-            #profile {
-                padding: 20px;
-                width: 90%;
-            }
-
-            #profile h1 {
-                font-size: 2rem;
-            }
-
-            #socials a {
-                font-size: 1.8rem;
-            }
-        }
-
-        /* Add smooth transitions and animations for profile reveal */
-        @keyframes reveal {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: linear-gradient(135deg, #6f8bb2, #56ccf2); color: #333; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+        #profile { display: none; text-align: center; max-width: 800px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); animation: reveal 1s ease-out forwards; }
+        #profile img { width: 200px; height: 200px; border-radius: 50%; margin-bottom: 30px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+        #profile h1 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; }
+        #profile p { font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6; }
+        #socials { list-style-type: none; padding: 0; display: flex; justify-content: center; gap: 20px; }
+        #socials a { text-decoration: none; font-size: 1.8rem; color: #333; transition: color 0.3s, transform 0.2s; }
+        #socials a:hover { color: #56ccf2; transform: scale(1.2); }
+        #last-updated { position: fixed; bottom: 20px; right: 20px; font-size: 1rem; color: #fff; background-color: rgba(0, 0, 0, 0.6); padding: 8px 12px; border-radius: 10px; font-style: italic; }
+        .dot { font-size: 2.5rem; display: inline-block; animation: blink 1s step-end infinite; }
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 50%, 100% { opacity: 0; } 25%, 75% { opacity: 1; } }
+        @keyframes reveal { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
         <span>Loading</span>
-        <span class="dot">.</span>
-        <span class="dot">.</span>
-        <span class="dot">.</span>
+        <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
     </div>
 
     <!-- Profile Section -->
     <div id="profile">
         <img src="https://www.example.com/your-profile-pic.jpg" alt="Your Profile Picture">
-        <h1>Welcome</h1>
+        <h1>Vaz</h1>
         <p></p>
         <ul id="socials">
-            <li><a href="https://www.instagram.com/Savuyyy" target="_blank">Instagram</a></li>
+            <li><a href="https://www.instagram.com/@Savuyyy" target="_blank">Instagram</a></li>
             <li><a href="https://www.tiktok.com/@Savuyy" target="_blank">TikTok</a></li>
         </ul>
-        <p>Contact me: <a href="mailto:youremail@gmail.com" id="email-link">veixeditz@gmail.com</a></p>
+        <p>Contact me: <a href="mailto:youremail@gmail.com">veixeditz@gmail.com</a></p>
     </div>
 
     <!-- Last Updated Timestamp -->
@@ -222,26 +48,17 @@
     </div>
 
     <script>
-        // Function to format the date and display it
         function formatDate(date) {
-            let options = { 
-                weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
-                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
-            };
+            let options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
             return date.toLocaleString('en-US', options);
         }
-
-        // Set the last updated timestamp
         document.getElementById("update-time").textContent = formatDate(new Date());
 
-        // Simulate loading and then display the profile with an animation
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
-                const profile = document.getElementById('profile');
-                profile.style.display = 'block';
-                profile.style.animation = 'reveal 1s ease-out forwards';
-            }, 3000); // After 3 seconds
+                document.getElementById('profile').style.display = 'block';
+            }, 3000);
         };
     </script>
 </body>

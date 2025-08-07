@@ -1,298 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vaz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Orbitron', sans-serif;
-      cursor: url('https://cur.cursors-4u.net/cursors/cur-13/cur1149.cur'), auto;
-    }
-    body {
-      background: linear-gradient(to bottom, #000000, #0a0a0a);
-      color: #fff;
-      overflow-x: hidden;
-    }
-    .glow {
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    }
-    .loading-screen {
-      height: 100vh;
-      display: flex;
-      justify-content: center; align-items: center;
-      background: #000;
-      color: #0ff;
-      font-size: 3rem;
-      animation: fadein 1.5s ease-in;
-    }
-    .loading-dots::after {
-      content: ' .';
-      animation: dots 1.5s steps(3, end) infinite;
-    }
-    @keyframes dots {
-      0%, 20% { content: ' .'; }
-      40% { content: ' ..'; }
-      60% { content: ' ...'; }
-      100% { content: ' .'; }
-    }
-    @keyframes fadein {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .profile {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 2rem;
-      min-height: 100vh;
-      animation: fadein 2s ease-in;
-    }
-    .profile img {
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #0ff;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 0 20px #0ff;
-    }
-    .profile h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    .profile p {
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin-bottom: 2rem;
-      opacity: 0.9;
-    }
-    .socials {
-      margin-bottom: 2rem;
-    }
-    .socials a {
-      color: #0ff;
-      font-size: 2.2rem;
-      margin: 0 1rem;
-      transition: transform 0.3s, color 0.3s;
-    }
-    .socials a:hover {
-      transform: scale(1.3);
-      color: #fff;
-    }
-    .donate-button {
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 10px;
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-    .donate-button:hover {
-      background: #00cccc;
-      transform: scale(1.05);
-    }
-    #donate-popup, #development-msg {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #111;
-      color: white;
-      padding: 2rem;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 25px #0ff;
-      z-index: 100;
-      min-width: 320px;
-    }
-    #donate-popup input[type="number"],
-    #donate-popup select {
-      padding: 0.6rem;
-      font-size: 1rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      width: 80%;
-      background: #000;
-      color: #0ff;
-      border: 1px solid #0ff;
-      border-radius: 8px;
-    }
-    #donate-popup button,
-    #development-msg button {
-      margin-top: 1rem;
-      padding: 0.6rem 1.4rem;
-      font-size: 1rem;
-      border: none;
-      background: #0ff;
-      color: #000;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #donate-popup button:hover,
-    #development-msg button:hover {
-      background: #00cccc;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Site Down</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #444;
-    }
-    .badge {
-      margin-top: 2rem;
-      font-size: 0.95rem;
-      background: #111;
-      padding: 0.5rem 1.2rem;
-      border-radius: 6px;
-      border: 1px solid #0ff;
-      display: inline-block;
-      color: #0ff;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 5px #0ff; }
-      50% { box-shadow: 0 0 15px #0ff; }
-      100% { box-shadow: 0 0 5px #0ff; }
-    }
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    user-select: none;
+  }
 
-    /* Mailbox styles */
-    #mailbox {
-      margin-top: 3rem;
-      max-width: 600px;
-      width: 100%;
+  h1 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #fff;
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #fff;
+    animation: flicker 3s infinite alternate;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff;
     }
-    #mailbox input,
-    #mailbox textarea {
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 6px;
-      border: 1px solid #0ff;
-      background: #000;
-      color: #0ff;
-      resize: vertical;
+    20%, 22%, 24%, 55% {
+      opacity: 0.6;
+      text-shadow: none;
     }
-    #mailbox button {
-      margin-top: 1rem;
-      padding: 0.8rem 1.2rem;
-      background: #0ff;
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #mailbox button:hover {
-      background: #00cccc;
-    }
-  </style>
+  }
+
+  .subtext {
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    color: #ddd;
+  }
+
+  .dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: blink 1.4s infinite;
+  }
+  .dots span:nth-child(1) { animation-delay: 0s; }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.3; }
+    40% { opacity: 1; }
+  }
+
+  .rocket {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-left: 1rem;
+    animation: rocketBounce 3s ease-in-out infinite;
+  }
+
+  @keyframes rocketBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(8deg); }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 15px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+</style>
 </head>
 <body>
 
-  <div class="loading-screen" id="loading">
-    <div class="loading-dots">Loading</div>
-  </div>
+  <h1>Website is currently down</h1>
 
-  <div class="profile" id="profile">
-    <img src="https://cdn.discordapp.com/attachments/1272251376520527948/1402689854978134026/Neymar_Jr.jpg?ex=6894d43a&is=689382ba&hm=f74a8d68d2f1b7de3bb8ba1323261728cda8455dc4a7a758111bf72c43a46f20&" alt="Profile Picture" />
-    <h1 class="glow">Vaz</h1>
-    <p class="glow">Jesus chose you,<br>and He would choose you again and again.</p>
-
-    <div class="socials">
-      <a href="https://tiktok.com/@savuyy" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://youtube.com/@cvarzz?si=dzx8Ef7swaQgeH3r" target="_blank"><i class="fab fa-youtube"></i></a>
+  <div class="subtext">
+    Updating, website will be back soon
+    <div class="dots">
+      <span></span><span></span><span></span>
     </div>
-
-    <button class="donate-button" onclick="openDonatePopup()">Donate ♥️</button>
-
-    <!-- Inline Mailbox Form -->
-    <div id="mailbox">
-      <h3 class="glow">Send a Message</h3>
-      <form id="mailboxForm" onsubmit="sendToGmail(event)">
-        <input type="text" id="userName" placeholder="Your Name" required />
-        <input type="email" id="userEmail" placeholder="Your Gmail" required />
-        <textarea id="userMessage" placeholder="Your message..." rows="5" required></textarea>
-        <button type="submit">Send</button>
-        <p class="glow" id="feedbackSuccess" style="margin-top: 1rem; display:none;">Vaz will answer soon. Thank you!</p>
-      </form>
-    </div>
-
-    <div class="badge">Still in development 💻</div>
+    <div class="rocket">🚀</div>
   </div>
 
-  <div id="donate-popup">
-    <h3>Select your donation:</h3>
-    <input type="number" id="donationAmount" placeholder="Amount" min="1" />
-    <select id="currency">
-      <option value="$">$ (USD)</option>
-      <option value="€">€ (EUR)</option>
-      <option value="£">£ (GBP)</option>
-      <option value="¥">¥ (JPY)</option>
-    </select><br />
-    <button onclick="confirmDonation()">Continue with PayPal</button><br />
-    <button onclick="closeDonatePopup()">Cancel</button>
-  </div>
+  <footer>© 2025 Vaz</footer>
 
-  <div id="development-msg">
-    <p>This feature is still in development.</p>
-    <button onclick="closeDevMsg()">OK</button>
-  </div>
-
-  <footer>
-    © 2025 Vaz. All rights reserved.
-  </footer>
-
-  <script>
-    // Load screen
-    setTimeout(() => {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('profile').style.display = 'flex';
-    }, 3000);
-
-    // Donation popup
-    function openDonatePopup() {
-      document.getElementById('donate-popup').style.display = 'block';
-    }
-    function closeDonatePopup() {
-      document.getElementById('donate-popup').style.display = 'none';
-    }
-
-    function confirmDonation() {
-      closeDonatePopup();
-      document.getElementById('development-msg').style.display = 'block';
-    }
-    function closeDevMsg() {
-      document.getElementById('development-msg').style.display = 'none';
-    }
-
-    // Send email via mailto
-    function sendToGmail(event) {
-      event.preventDefault();
-
-      const name = document.getElementById("userName").value.trim();
-      const email = document.getElementById("userEmail").value.trim();
-      const message = document.getElementById("userMessage").value.trim();
-
-      const body = `Name: ${name}%0DEmail: ${email}%0D%0DMessage:%0D${encodeURIComponent(message)}`;
-      const mailtoLink = `mailto: vazof21@gmail.com?subject=Message from ${name}&body=${body}`;
-
-      // Show success text
-      const successText = document.getElementById("feedbackSuccess");
-      successText.style.display = "block";
-
-      setTimeout(() => {
-        window.location.href = mailtoLink;
-      }, 1500); // Small delay to show message before redirect
-    }
-  </script>
 </body>
 </html>

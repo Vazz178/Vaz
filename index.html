@@ -21,7 +21,6 @@
       transition: opacity 0.5s ease;
     }
 
-    /* Body & container */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -130,6 +129,12 @@
     <form id="contactForm" action="https://formsubmit.co/vazof21@gmail.com" method="POST">
       <!-- Disable FormSubmit captcha -->
       <input type="hidden" name="_captcha" value="false">
+      <!-- Automatic response -->
+      <input type="hidden" name="_autoresponse" value="✅ Thank you for reaching out!
+
+This is the easiest way to contact me when I’m unavailable on Discord or other platforms.
+
+⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.">
 
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
@@ -145,7 +150,6 @@
 
     <div id="response">
       <strong>✅ Thank you for reaching out!</strong>
-      <p>I’ve received your message and usually respond within 30 minutes to 3 hours, which is faster than on any other platform.</p>
       <p>This is the easiest way to contact me when I’m unavailable on Discord or other platforms.</p>
       <p class="warning">⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.</p>
     </div>

@@ -3,170 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏗️ House Slab Update Event</title>
+<title>🚧 Page Under Update</title>
 <style>
   body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #111;
-    color: #fff;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    transition: background 1s ease;
+    background: radial-gradient(circle at top, #0c0c25, #000);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    overflow: hidden;
   }
-  .container {
-    background-color: #1e1e1e;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-    text-align: center;
-  }
-  h1, h2 { color: #fff; }
-  p { color: #ccc; }
 
-  .update-mode {
-    background: radial-gradient(circle, #ff9900 0%, #000 80%);
+  .rocket {
+    font-size: 40px;
+    position: absolute;
+    animation: fly 8s linear infinite;
+  }
+
+  @keyframes fly {
+    0% { transform: translate(-120px, 80px) rotate(-45deg); opacity: 0.9; }
+    50% { transform: translate(300px, -180px) rotate(-45deg); opacity: 1; }
+    100% { transform: translate(700px, 100px) rotate(-45deg); opacity: 0.9; }
+  }
+
+  .message-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 40px 20px;
-    animation: pulse 2s infinite alternate;
-  }
-  @keyframes pulse {
-    from { box-shadow: 0 0 20px #ff9900; }
-    to { box-shadow: 0 0 40px #ff6600; }
-  }
-
-  .designer {
-    display: none;
-    margin-top: 20px;
+    padding: 30px 40px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(255,255,255,0.08);
+    backdrop-filter: blur(6px);
+    max-width: 550px;
   }
 
-  #slab {
+  h1 {
+    font-size: 2rem;
+    color: #00aaff;
+    text-shadow: 0 0 12px #00aaff, 0 0 24px #0077cc;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  .announcement-box {
+    margin-top: 25px;
     width: 100%;
-    height: 200px;
-    border-radius: 8px;
-    background-color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 20px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .announcement-box caption {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 10px;
     font-weight: bold;
-    transition: all 0.5s ease;
+    color: #00aaff;
+    text-shadow: 0 0 6px #00aaff;
   }
 
-  input[type="color"], input[type="text"] {
-    margin: 10px 5px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background-color: #222;
-    color: #fff;
-  }
-
-  button {
-    margin-top: 15px;
+  .announcement-box td {
     padding: 12px;
-    background-color: #fff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
   }
-  button:hover { background-color: #ccc; }
 
-  #sent {
-    display: none;
-    margin-top: 20px;
-    background-color: #333;
-    padding: 15px;
-    border-left: 4px solid #fff;
-    border-radius: 8px;
+  footer {
+    position: absolute;
+    bottom: 15px;
+    font-size: 0.85rem;
+    color: #555;
+    letter-spacing: 0.5px;
   }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <!-- Update Mode (Active between 4:35 PM and 4:45 PM) -->
-  <div id="update" class="update-mode">
-    <h2>🏗️ Preparing the House Slab...</h2>
-    <p>We’re mixing creativity and concrete — update ends at <strong>4:45 PM</strong> ⏰</p>
+  <div class="rocket">🚀</div>
+
+  <div class="message-box">
+    <h1>Page Temporarily Down for Updates</h1>
+    <p>
+      Hey there 👋  
+      I’m currently making some updates and changes to improve this page and add new features.  
+      It might take a little while, but I’m making sure everything works perfectly before it’s back online.
+    </p>
+    <p>
+      Thanks for your patience and for checking in — I’ll have it running again soon! ⚙️
+    </p>
+
+    <table class="announcement-box">
+      <caption>📢 Mini Announcements</caption>
+      <tr><td>No announcements yet. Check back later!</td></tr>
+    </table>
   </div>
 
-  <!-- Designer Mode (after 4:45 PM) -->
-  <div id="designer" class="designer">
-    <h1>🏡 Design Your House Slab</h1>
-    <p>Pick your color and name your slab 👇</p>
+  <footer>© 2025 Vaqy Updates | Page currently being improved</footer>
 
-    <div id="slab">My House</div>
-
-    <div>
-      <label>Color:</label>
-      <input type="color" id="colorPicker" value="#888888">
-      <label>Text:</label>
-      <input type="text" id="slabText" placeholder="Enter house name">
-      <button id="applyBtn">Apply</button>
-    </div>
-
-    <button id="sendBtn">📤 Send My Slab</button>
-
-    <div id="sent">
-      ✅ Your house slab has been sent!  
-      <p>I’ll rate it soon 👷‍♂️</p>
-    </div>
-  </div>
-</div>
-
-<script>
-  const updateDiv = document.getElementById("update");
-  const designerDiv = document.getElementById("designer");
-  const slab = document.getElementById("slab");
-  const colorPicker = document.getElementById("colorPicker");
-  const slabText = document.getElementById("slabText");
-  const applyBtn = document.getElementById("applyBtn");
-  const sendBtn = document.getElementById("sendBtn");
-  const sentMsg = document.getElementById("sent");
-
-  // Set event times
-  const startTime = new Date();
-  startTime.setHours(16, 35, 0); // 4:35 PM
-  const endTime = new Date();
-  endTime.setHours(16, 45, 0); // 4:45 PM
-  const now = new Date();
-
-  // Show correct mode based on current time
-  if (now >= startTime && now < endTime) {
-    updateDiv.style.display = "block";
-    designerDiv.style.display = "none";
-  } else if (now >= endTime) {
-    updateDiv.style.display = "none";
-    designerDiv.style.display = "block";
-  } else {
-    updateDiv.innerHTML = `<h2>⏳ Next Update Starts at 4:35 PM</h2><p>Get ready to design your house slab!</p>`;
-  }
-
-  // Apply color and name changes
-  applyBtn.addEventListener("click", () => {
-    const color = colorPicker.value;
-    const text = slabText.value.trim() || "My House";
-    slab.style.backgroundColor = color;
-    slab.textContent = text;
-  });
-
-  // Send the design via Gmail
-  sendBtn.addEventListener("click", () => {
-    const designName = slab.textContent;
-    const color = colorPicker.value;
-    const mailto = `mailto:vazof21@gmail.com?subject=House Slab Design Submission&body=Design Name: ${encodeURIComponent(designName)}%0AColor: ${encodeURIComponent(color)}%0A(Attach a picture of your slab if possible!)`;
-    window.location.href = mailto;
-    sentMsg.style.display = "block";
-  });
-</script>
 </body>
 </html>

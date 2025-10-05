@@ -75,9 +75,7 @@
     box-sizing: border-box;
   }
 
-  textarea {
-    resize: vertical;
-  }
+  textarea { resize: vertical; }
 
   button {
     margin-top: 20px;
@@ -92,9 +90,7 @@
     font-weight: bold;
   }
 
-  button:hover {
-    background-color: #ccc;
-  }
+  button:hover { background-color: #ccc; }
 
   #response {
     margin-top: 20px;
@@ -107,34 +103,74 @@
     font-size: 14px;
   }
 
-  #response p {
-    margin: 8px 0 0 0;
-  }
+  #response p { margin: 8px 0 0 0; }
 
   #response .warning {
     color: #ffcc00;
     font-size: 13px;
     margin-top: 10px;
   }
+
+  /* Update Mode Screen */
+  #update-mode {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  #update-mode h2 {
+    color: #ffcc00;
+  }
+
+  #update-mode p {
+    color: #ccc;
+  }
+
+  /* TikTok link */
+  .social-update {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .social-update a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+  }
+
+  .social-update img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
 </style>
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div id="loading">Loading, please wait...</div>
 
-  <div class="contact-container" style="display:none;">
+<!-- Loading Screen -->
+<div id="loading">Loading, please wait...</div>
+
+<div class="contact-container" style="display:none;">
+  <!-- Update Mode Section -->
+  <div id="update-mode">
+    <h2>🛠️ Site Updating...</h2>
+    <p>We're making some improvements right now.</p>
+    <p>Update returns at <strong>9:34 AM</strong>.</p>
+  </div>
+
+  <!-- Normal Content -->
+  <div id="contact-content">
     <h2>Contact Me</h2>
     <p class="info-text">The easiest way to contact me when I’m unavailable on Discord or other platforms.</p>
 
     <form id="contactForm" action="https://formsubmit.co/vazof21@gmail.com" method="POST">
-      <!-- Required hidden fields for FormSubmit -->
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://formsubmit.co/thank-you.html">
-      <input type="hidden" name="_autoresponse" value="✅ Thank you for reaching out!
-
-This is the easiest way to contact me when I’m unavailable on Discord or other platforms.
-
-⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.">
+      <input type="hidden" name="_autoresponse"
+        value="✅ Thank you for reaching out!  This is the easiest way to contact me when I’m unavailable on Discord or other platforms.  ⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.">
 
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
@@ -153,10 +189,20 @@ This is the easiest way to contact me when I’m unavailable on Discord or other
       <p>This is the easiest way to contact me when I’m unavailable on Discord or other platforms.</p>
       <p class="warning">⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.</p>
     </div>
+
+    <!-- TikTok link (only shows after update period ends once) -->
+    <div class="social-update" id="socialUpdate" style="display:none;">
+      <p><strong>🔄 Updated Today at 9:34 AM</strong></p>
+      <a href="https://tiktok.com/@vaqy8" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png" alt="TikTok">
+        @vaqy8
+      </a>
+    </div>
   </div>
+</div>
 
 <script>
-  // Loading fade
+  // Loading Fade
   window.addEventListener('load', () => {
     const loading = document.getElementById('loading');
     const container = document.querySelector('.contact-container');
@@ -164,6 +210,42 @@ This is the easiest way to contact me when I’m unavailable on Discord or other
     setTimeout(() => loading.style.display = 'none', 500);
     container.style.display = 'block';
   });
+
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+
+  const updateMode = document.getElementById('update-mode');
+  const contactContent = document.getElementById('contact-content');
+  const socialUpdate = document.getElementById('socialUpdate');
+
+  // Check if update already finished before
+  const updateDone = localStorage.getItem("updateDone");
+
+  // Define update window: 9:29 to 9:34
+  const isUpdating = (hours === 9 && minutes >= 29 && minutes < 34);
+
+  if (isUpdating && !updateDone) {
+    // During update
+    updateMode.style.display = 'block';
+    contactContent.style.display = 'none';
+    // After update period, reload to show new version
+    const remaining = (34 - minutes) * 60 * 1000;
+    setTimeout(() => location.reload(), remaining);
+  } else {
+    // After update or normal mode
+    updateMode.style.display = 'none';
+    contactContent.style.display = 'block';
+
+    if (!updateDone && (hours > 9 || (hours === 9 && minutes >= 34))) {
+      // Mark update complete after 9:34 AM
+      localStorage.setItem("updateDone", "true");
+      socialUpdate.style.display = 'block';
+    } else if (updateDone) {
+      // Always show TikTok link after update completed once
+      socialUpdate.style.display = 'block';
+    }
+  }
 
   // Form submission handling
   const form = document.getElementById('contactForm');
@@ -176,9 +258,7 @@ This is the easiest way to contact me when I’m unavailable on Discord or other
     fetch(form.action, {
       method: 'POST',
       body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
+      headers: { 'Accept': 'application/json' }
     }).then(res => {
       if (res.ok) {
         form.style.display = 'none';

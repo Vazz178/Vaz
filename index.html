@@ -3,24 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Me</title>
+<title>🏗️ House Slab Update Event</title>
 <style>
-  /* Loading Screen */
-  #loading {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    font-size: 24px;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
-  }
-
   body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -31,242 +15,157 @@
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    transition: background 1s ease;
   }
-
-  .contact-container {
+  .container {
     background-color: #1e1e1e;
     padding: 30px;
     border-radius: 10px;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-  }
-
-  h2 {
-    margin-top: 0;
-    font-size: 28px;
-    color: #fff;
     text-align: center;
   }
+  h1, h2 { color: #fff; }
+  p { color: #ccc; }
 
-  .info-text {
-    font-size: 14px;
-    margin-bottom: 20px;
-    color: #ccc;
-    text-align: center;
+  .update-mode {
+    background: radial-gradient(circle, #ff9900 0%, #000 80%);
+    border-radius: 12px;
+    padding: 40px 20px;
+    animation: pulse 2s infinite alternate;
+  }
+  @keyframes pulse {
+    from { box-shadow: 0 0 20px #ff9900; }
+    to { box-shadow: 0 0 40px #ff6600; }
   }
 
-  label {
-    display: block;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #eee;
+  .designer {
+    display: none;
+    margin-top: 20px;
   }
 
-  input, textarea {
+  #slab {
     width: 100%;
-    padding: 12px;
+    height: 200px;
+    border-radius: 8px;
+    background-color: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.5s ease;
+  }
+
+  input[type="color"], input[type="text"] {
+    margin: 10px 5px;
+    padding: 8px;
     border-radius: 6px;
-    border: 1px solid #555;
+    border: 1px solid #444;
     background-color: #222;
     color: #fff;
-    font-size: 14px;
-    box-sizing: border-box;
   }
 
-  textarea { resize: vertical; }
-
   button {
-    margin-top: 20px;
-    padding: 14px;
-    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
     background-color: #fff;
     color: #000;
-    font-size: 16px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
   }
-
   button:hover { background-color: #ccc; }
 
-  #response {
+  #sent {
+    display: none;
     margin-top: 20px;
-    padding: 15px;
     background-color: #333;
-    color: #fff;
+    padding: 15px;
     border-left: 4px solid #fff;
-    display: none;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-
-  #response p { margin: 8px 0 0 0; }
-
-  #response .warning {
-    color: #ffcc00;
-    font-size: 13px;
-    margin-top: 10px;
-  }
-
-  /* Update Mode Screen */
-  #update-mode {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
-  }
-
-  #update-mode h2 {
-    color: #ffcc00;
-  }
-
-  #update-mode p {
-    color: #ccc;
-  }
-
-  /* TikTok link */
-  .social-update {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .social-update a {
-    color: #fff;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-  }
-
-  .social-update img {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
+    border-radius: 8px;
   }
 </style>
 </head>
 <body>
 
-<!-- Loading Screen -->
-<div id="loading">Loading, please wait...</div>
-
-<div class="contact-container" style="display:none;">
-  <!-- Update Mode Section -->
-  <div id="update-mode">
-    <h2>🛠️ Site Updating...</h2>
-    <p>We're making some improvements right now.</p>
-    <p>Update returns at <strong>9:34 AM</strong>.</p>
+<div class="container">
+  <!-- Update Mode (Active between 4:35 PM and 4:45 PM) -->
+  <div id="update" class="update-mode">
+    <h2>🏗️ Preparing the House Slab...</h2>
+    <p>We’re mixing creativity and concrete — update ends at <strong>4:45 PM</strong> ⏰</p>
   </div>
 
-  <!-- Normal Content -->
-  <div id="contact-content">
-    <h2>Contact Me</h2>
-    <p class="info-text">The easiest way to contact me when I’m unavailable on Discord or other platforms.</p>
+  <!-- Designer Mode (after 4:45 PM) -->
+  <div id="designer" class="designer">
+    <h1>🏡 Design Your House Slab</h1>
+    <p>Pick your color and name your slab 👇</p>
 
-    <form id="contactForm" action="https://formsubmit.co/vazof21@gmail.com" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://formsubmit.co/thank-you.html">
-      <input type="hidden" name="_autoresponse"
-        value="✅ Thank you for reaching out!  This is the easiest way to contact me when I’m unavailable on Discord or other platforms.  ⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.">
+    <div id="slab">My House</div>
 
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="6" required></textarea>
-
-      <button type="submit">Send</button>
-    </form>
-
-    <div id="response">
-      <strong>✅ Thank you for reaching out!</strong>
-      <p>This is the easiest way to contact me when I’m unavailable on Discord or other platforms.</p>
-      <p class="warning">⚠️ Please note: this is an automatic message. I’ll personally reply as soon as possible.</p>
+    <div>
+      <label>Color:</label>
+      <input type="color" id="colorPicker" value="#888888">
+      <label>Text:</label>
+      <input type="text" id="slabText" placeholder="Enter house name">
+      <button id="applyBtn">Apply</button>
     </div>
 
-    <!-- TikTok link (only shows after update period ends once) -->
-    <div class="social-update" id="socialUpdate" style="display:none;">
-      <p><strong>🔄 Updated Today at 9:34 AM</strong></p>
-      <a href="https://tiktok.com/@vaqy8" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png" alt="TikTok">
-        @vaqy8
-      </a>
+    <button id="sendBtn">📤 Send My Slab</button>
+
+    <div id="sent">
+      ✅ Your house slab has been sent!  
+      <p>I’ll rate it soon 👷‍♂️</p>
     </div>
   </div>
 </div>
 
 <script>
-  // Loading Fade
-  window.addEventListener('load', () => {
-    const loading = document.getElementById('loading');
-    const container = document.querySelector('.contact-container');
-    loading.style.opacity = '0';
-    setTimeout(() => loading.style.display = 'none', 500);
-    container.style.display = 'block';
-  });
+  const updateDiv = document.getElementById("update");
+  const designerDiv = document.getElementById("designer");
+  const slab = document.getElementById("slab");
+  const colorPicker = document.getElementById("colorPicker");
+  const slabText = document.getElementById("slabText");
+  const applyBtn = document.getElementById("applyBtn");
+  const sendBtn = document.getElementById("sendBtn");
+  const sentMsg = document.getElementById("sent");
 
+  // Set event times
+  const startTime = new Date();
+  startTime.setHours(16, 35, 0); // 4:35 PM
+  const endTime = new Date();
+  endTime.setHours(16, 45, 0); // 4:45 PM
   const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
 
-  const updateMode = document.getElementById('update-mode');
-  const contactContent = document.getElementById('contact-content');
-  const socialUpdate = document.getElementById('socialUpdate');
-
-  // Check if update already finished before
-  const updateDone = localStorage.getItem("updateDone");
-
-  // Define update window: 9:29 to 9:34
-  const isUpdating = (hours === 9 && minutes >= 29 && minutes < 34);
-
-  if (isUpdating && !updateDone) {
-    // During update
-    updateMode.style.display = 'block';
-    contactContent.style.display = 'none';
-    // After update period, reload to show new version
-    const remaining = (34 - minutes) * 60 * 1000;
-    setTimeout(() => location.reload(), remaining);
+  // Show correct mode based on current time
+  if (now >= startTime && now < endTime) {
+    updateDiv.style.display = "block";
+    designerDiv.style.display = "none";
+  } else if (now >= endTime) {
+    updateDiv.style.display = "none";
+    designerDiv.style.display = "block";
   } else {
-    // After update or normal mode
-    updateMode.style.display = 'none';
-    contactContent.style.display = 'block';
-
-    if (!updateDone && (hours > 9 || (hours === 9 && minutes >= 34))) {
-      // Mark update complete after 9:34 AM
-      localStorage.setItem("updateDone", "true");
-      socialUpdate.style.display = 'block';
-    } else if (updateDone) {
-      // Always show TikTok link after update completed once
-      socialUpdate.style.display = 'block';
-    }
+    updateDiv.innerHTML = `<h2>⏳ Next Update Starts at 4:35 PM</h2><p>Get ready to design your house slab!</p>`;
   }
 
-  // Form submission handling
-  const form = document.getElementById('contactForm');
-  const response = document.getElementById('response');
+  // Apply color and name changes
+  applyBtn.addEventListener("click", () => {
+    const color = colorPicker.value;
+    const text = slabText.value.trim() || "My House";
+    slab.style.backgroundColor = color;
+    slab.textContent = text;
+  });
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    }).then(res => {
-      if (res.ok) {
-        form.style.display = 'none';
-        response.style.display = 'block';
-      } else {
-        alert('There was a problem submitting your form. Please try again later.');
-      }
-    }).catch(() => alert('There was a problem submitting your form. Please try again later.'));
+  // Send the design via Gmail
+  sendBtn.addEventListener("click", () => {
+    const designName = slab.textContent;
+    const color = colorPicker.value;
+    const mailto = `mailto:vazof21@gmail.com?subject=House Slab Design Submission&body=Design Name: ${encodeURIComponent(designName)}%0AColor: ${encodeURIComponent(color)}%0A(Attach a picture of your slab if possible!)`;
+    window.location.href = mailto;
+    sentMsg.style.display = "block";
   });
 </script>
 </body>

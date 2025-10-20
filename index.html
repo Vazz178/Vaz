@@ -1,97 +1,61 @@
-/*
-  Business Landing Page (React + Tailwind CSS)
-  Brand: VAZy
-  Launch: January 2026
-  Includes: Notify form connected to Formspree
-*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAZy – Under Development</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-50 to-white text-gray-800 flex flex-col items-center justify-center min-h-screen px-6">
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+  <!-- LOGO / BRAND -->
+  <div class="flex items-center gap-3 mb-8">
+    <div class="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-teal-400 flex items-center justify-center text-white text-2xl font-bold shadow-lg">V</div>
+    <h1 class="text-3xl font-extrabold tracking-tight">VAZy</h1>
+  </div>
 
-export default function LandingPage() {
-  const [submitted, setSubmitted] = useState(false);
+  <!-- MAIN MESSAGE -->
+  <div class="max-w-2xl text-center">
+    <h2 class="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
+    <p class="text-gray-600 text-lg leading-relaxed">
+      We’re building something powerful and elegant — a business platform designed to help you achieve more.<br>
+      Expected launch: <strong>January 2026</strong>
+    </p>
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-800 flex flex-col items-center justify-center text-center px-6">
-      {/* LOGO / BRAND */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-3 mb-8">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-teal-400 flex items-center justify-center text-white text-2xl font-bold shadow-lg">V</div>
-        <h1 className="text-3xl font-extrabold tracking-tight">VAZy</h1>
-      </motion.div>
-
-      {/* MAIN MESSAGE */}
-      <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }} className="max-w-2xl">
-        <h2 className="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
-        <p className="text-gray-600 text-lg leading-relaxed">
-          We’re building something powerful and elegant — a business platform designed to help you achieve more.
-          <br />
-          Expected launch: <strong>January 2026</strong>
-        </p>
-
-        {/* NOTIFY FORM */}
-        <div className="mt-8">
-          {!submitted ? (
-            <form
-              onSubmit={handleSubmit}
-              action="https://formspree.io/f/xzzjwnzl"
-              method="POST"
-              className="flex flex-col sm:flex-row items-center justify-center gap-3"
-            >
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="Enter your email to get notified"
-                className="px-4 py-3 w-full sm:w-72 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-              >
-                Notify Me
-              </button>
-            </form>
-          ) : (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-600 font-medium mt-4">
-              ✅ Thanks! You’ll be notified when VAZy launches.
-            </motion.p>
-          )}
-        </div>
-
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <a href="mailto:vazof21@gmail.com" className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-            Contact Us
-          </a>
-        </div>
-      </motion.div>
-
-      {/* STATUS CARD */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="mt-12 bg-white shadow-lg rounded-2xl p-6 max-w-md w-full">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-gray-700">Current Status</h3>
-          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">In Development</span>
-        </div>
-        <div className="mt-4 text-left text-gray-600 text-sm leading-relaxed">
-          Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
-        </div>
-      </motion.div>
-
-      {/* FOOTER */}
-      <footer className="mt-16 text-gray-400 text-sm border-t pt-6 w-full max-w-3xl">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-          <div>© {new Date().getFullYear()} VAZy — All rights reserved.</div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-blue-600">Twitter</a>
-            <a href="#" className="hover:text-blue-600">LinkedIn</a>
-            <a href="mailto:vazof21@gmail.com" className="hover:text-blue-600">Email</a>
-          </div>
-        </div>
-      </footer>
+    <!-- NOTIFY FORM -->
+    <div class="mt-8">
+      <form action="https://formspree.io/f/xzzjwnzl" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <input type="email" name="email" required placeholder="Enter your email to get notified" class="px-4 py-3 w-full sm:w-72 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">Notify Me</button>
+      </form>
+      <p class="text-green-600 font-medium mt-4 text-center">✅ You’ll be notified when VAZy launches.</p>
     </div>
-  );
-}
+
+    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+      <a href="mailto:vazof21@gmail.com" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Contact Us</a>
+    </div>
+  </div>
+
+  <!-- STATUS CARD -->
+  <div class="mt-12 bg-white shadow-lg rounded-2xl p-6 max-w-md w-full text-left">
+    <div class="flex items-center justify-between">
+      <h3 class="font-semibold text-gray-700">Current Status</h3>
+      <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">In Development</span>
+    </div>
+    <p class="mt-4 text-gray-600 text-sm leading-relaxed">
+      Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="mt-16 text-gray-400 text-sm border-t pt-6 w-full max-w-3xl flex flex-col sm:flex-row justify-between items-center gap-3">
+    <div>© 2025 VAZy — All rights reserved.</div>
+    <div class="flex gap-4">
+      <a href="#" class="hover:text-blue-600">Twitter</a>
+      <a href="#" class="hover:text-blue-600">LinkedIn</a>
+      <a href="mailto:vazof21@gmail.com" class="hover:text-blue-600">Noticed</a>
+    </div>
+  </footer>
+
+</body>
+</html>

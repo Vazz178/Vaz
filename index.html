@@ -1,117 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚧 Page Under Update</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at top, #0c0c25, #000);
-    font-family: 'Poppins', sans-serif;
-    color: #fff;
-    overflow: hidden;
-  }
+/*
+  Business Landing Page (React + Tailwind CSS)
+  Brand: VAZy
+  Launch: January 2026
+  Includes: Notify form connected to Formspree
+*/
 
-  .rocket {
-    font-size: 40px;
-    position: absolute;
-    animation: fly 8s linear infinite;
-  }
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-  @keyframes fly {
-    0% { transform: translate(-120px, 80px) rotate(-45deg); opacity: 0.9; }
-    50% { transform: translate(300px, -180px) rotate(-45deg); opacity: 1; }
-    100% { transform: translate(700px, 100px) rotate(-45deg); opacity: 0.9; }
-  }
+export default function LandingPage() {
+  const [submitted, setSubmitted] = useState(false);
 
-  .message-box {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 30px 40px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(255,255,255,0.08);
-    backdrop-filter: blur(6px);
-    max-width: 550px;
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
-  h1 {
-    font-size: 2rem;
-    color: #00aaff;
-    text-shadow: 0 0 12px #00aaff, 0 0 24px #0077cc;
-    margin-bottom: 10px;
-  }
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-800 flex flex-col items-center justify-center text-center px-6">
+      {/* LOGO / BRAND */}
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-3 mb-8">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-teal-400 flex items-center justify-center text-white text-2xl font-bold shadow-lg">V</div>
+        <h1 className="text-3xl font-extrabold tracking-tight">VAZy</h1>
+      </motion.div>
 
-  p {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.6;
-  }
+      {/* MAIN MESSAGE */}
+      <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }} className="max-w-2xl">
+        <h2 className="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
+        <p className="text-gray-600 text-lg leading-relaxed">
+          We’re building something powerful and elegant — a business platform designed to help you achieve more.
+          <br />
+          Expected launch: <strong>January 2026</strong>
+        </p>
 
-  .announcement-box {
-    margin-top: 25px;
-    width: 100%;
-    border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 10px;
-    overflow: hidden;
-  }
+        {/* NOTIFY FORM */}
+        <div className="mt-8">
+          {!submitted ? (
+            <form
+              onSubmit={handleSubmit}
+              action="https://formspree.io/f/xzzjwnzl"
+              method="POST"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3"
+            >
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="Enter your email to get notified"
+                className="px-4 py-3 w-full sm:w-72 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+              >
+                Notify Me
+              </button>
+            </form>
+          ) : (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-green-600 font-medium mt-4">
+              ✅ Thanks! You’ll be notified when VAZy launches.
+            </motion.p>
+          )}
+        </div>
 
-  .announcement-box caption {
-    background-color: rgba(255, 255, 255, 0.08);
-    padding: 10px;
-    font-weight: bold;
-    color: #00aaff;
-    text-shadow: 0 0 6px #00aaff;
-  }
+        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <a href="mailto:vazof21@gmail.com" className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+            Contact Us
+          </a>
+        </div>
+      </motion.div>
 
-  .announcement-box td {
-    padding: 12px;
-    text-align: center;
-    color: #aaa;
-    font-size: 0.95rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
+      {/* STATUS CARD */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="mt-12 bg-white shadow-lg rounded-2xl p-6 max-w-md w-full">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-gray-700">Current Status</h3>
+          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium">In Development</span>
+        </div>
+        <div className="mt-4 text-left text-gray-600 text-sm leading-relaxed">
+          Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
+        </div>
+      </motion.div>
 
-  footer {
-    position: absolute;
-    bottom: 15px;
-    font-size: 0.85rem;
-    color: #555;
-    letter-spacing: 0.5px;
-  }
-</style>
-</head>
-<body>
-
-  <div class="rocket">🚀</div>
-
-  <div class="message-box">
-    <h1>Page Temporarily Down for Updates</h1>
-    <p>
-      Hey there 👋  
-      I’m currently making some updates and improvements to make this page better and smoother to use.  
-      It might take a bit, but everything will be running perfectly once I’m done.
-    </p>
-    <p>
-      Thanks for being patient, I’m working on it right now! ⚙️
-    </p>
-
-    <table class="announcement-box">
-      <caption>📢 Mini Announcements</caption>
-      <tr>
-        <td>The website will be back online soon, it all depends on how quickly everything finishes up. 🚀</td>
-      </tr>
-    </table>
-  </div>
-
-  <footer>© 2025 Vaqy Updates | Page currently being improved</footer>
-
-</body>
-</html>
+      {/* FOOTER */}
+      <footer className="mt-16 text-gray-400 text-sm border-t pt-6 w-full max-w-3xl">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div>© {new Date().getFullYear()} VAZy — All rights reserved.</div>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-blue-600">Twitter</a>
+            <a href="#" className="hover:text-blue-600">LinkedIn</a>
+            <a href="mailto:vazof21@gmail.com" className="hover:text-blue-600">Email</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

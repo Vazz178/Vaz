@@ -1,248 +1,120 @@
-<!doctype html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>VAZy — Under Development</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAZy – Under Development</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          primary: '#3b82f6',
-          secondary: '#14b8a6',
-          accent: '#facc15'
+          primary: '#3b82f6',  // blue-600
+          secondary: '#14b8a6', // teal-400
+          accent: '#facc15',    // yellow-400
         }
       }
     }
-  };
+  }
 </script>
-<style>
-  /* small additions */
-  .animate-fadeIn { animation: fadeIn 1s forwards; }
-  .delay-200 { animation-delay: 0.2s; }
-  .delay-400 { animation-delay: 0.4s; }
-  .delay-600 { animation-delay: 0.6s; }
-  .delay-800 { animation-delay: 0.8s; }
-  @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
-  #click-effect { position:absolute; width:1rem; height:1rem; border-radius:50%; background:white; pointer-events:none; opacity:.9; transform:translate(-50%, -50%); animation: clickAnim 0.45s forwards; }
-  @keyframes clickAnim { 0%{ transform:translate(-50%,-50%) scale(.5); opacity:.9 } 100%{ transform:translate(-50%,-50%) scale(2.1); opacity:0 } }
-
-  /* decoy / banned styling */
-  .decoy-pre { background: #0b1220; color: #9aa8c3; padding: 1rem; border-radius: .5rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; }
-</style>
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 min-h-screen flex flex-col items-center justify-center px-6 relative overflow-x-hidden">
+<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col items-center justify-center min-h-screen px-6 font-sans overflow-x-hidden relative">
 
-  <!-- MAIN LAYOUT -->
-  <div id="site-root" class="w-full max-w-3xl">
-    <div class="flex items-center gap-3 mb-8 opacity-0 animate-fadeIn">
-      <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-3xl font-bold shadow-lg">V</div>
-      <h1 class="text-4xl font-extrabold tracking-tight">VAZy</h1>
-    </div>
+<!-- LOGO / BRAND -->
+<div class="flex items-center gap-3 mb-8 opacity-0 animate-fadeIn">
+  <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-3xl font-bold shadow-lg">V</div>
+  <h1 class="text-4xl font-extrabold tracking-tight">VAZy</h1>
+</div>
 
-    <main class="max-w-2xl text-center mx-auto opacity-0 animate-fadeIn delay-200">
-      <h2 class="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
-      <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        We’re building something powerful and elegant — a business platform designed to help you achieve more.<br>
-        Expected launch: <strong>January 2026</strong>
-      </p>
+<!-- MAIN MESSAGE -->
+<div class="max-w-2xl text-center opacity-0 animate-fadeIn delay-200">
+  <h2 class="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
+  <p class="text-gray-300 text-lg leading-relaxed mb-6">
+    We’re building something powerful and elegant — a business platform designed to help you achieve more.<br>
+    Expected launch: <strong>January 2026</strong>
+  </p>
 
-      <form action="https://formspree.io/f/xzzjwnzl" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
-        <input type="email" name="email" required placeholder="Enter your email to get notified"
-               class="px-4 py-3 w-full sm:w-80 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-gray-900 text-gray-100" />
-        <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow hover:bg-blue-700 transition">Notify Me</button>
-      </form>
-      <p class="text-green-400 font-medium mt-2 text-center">✅ You’ll be notified when VAZy launches.</p>
+  <!-- NOTIFY FORM -->
+  <form action="https://formspree.io/f/xzzjwnzl" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+    <input type="email" name="email" required placeholder="Enter your email to get notified" class="px-4 py-3 w-full sm:w-80 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-gray-900 text-gray-100">
+    <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow hover:bg-blue-700 transition">Notify Me</button>
+  </form>
+  <p class="text-green-400 font-medium mt-2 text-center"> You’ll be notified when VAZy launches.</p>
 
-      <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-        <a href="mailto:vazof21@gmail.com" class="px-6 py-3 border border-gray-700 rounded-lg hover:bg-gray-700 transition">Contact Us</a>
-      </div>
-    </main>
-
-    <section class="mt-12 bg-gray-900/60 shadow-lg rounded-2xl p-6 max-w-md w-full text-left opacity-0 animate-fadeIn delay-400">
-      <div class="flex items-center justify-between">
-        <h3 class="font-semibold text-gray-100">Current Status</h3>
-        <span class="text-xs bg-accent text-gray-900 px-2 py-1 rounded-full font-medium">In Development</span>
-      </div>
-      <p class="mt-4 text-gray-300 text-sm leading-relaxed">
-        Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
-      </p>
-    </section>
-
-    <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto opacity-0 animate-fadeIn delay-600 text-gray-200">
-      <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-        <h4 class="font-semibold mb-2">Fast & Secure</h4>
-        <p>Built with performance and security in mind.</p>
-      </div>
-      <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-        <h4 class="font-semibold mb-2">Clean UI</h4>
-        <p>Modern and intuitive interface for users.</p>
-      </div>
-      <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-        <h4 class="font-semibold mb-2">Continuous Updates</h4>
-        <p>Regular improvements and new features.</p>
-      </div>
-    </div>
-
-    <footer class="mt-16 text-gray-400 text-sm border-t border-gray-700 pt-6 w-full flex flex-col sm:flex-row justify-between items-center gap-3 opacity-0 animate-fadeIn delay-800">
-      <div>© 2025 VAZy — All rights reserved.</div>
-      <div class="flex gap-4">
-        <a href="#" class="hover:text-primary">Twitter</a>
-        <a href="#" class="hover:text-primary">LinkedIn</a>
-        <a href="mailto:vazof21@gmail.com" class="hover:text-primary">Email</a>
-      </div>
-    </footer>
+  <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+    <a href="mailto:vazof21@gmail.com" class="px-6 py-3 border border-gray-700 rounded-lg hover:bg-gray-700 transition">Contact Us</a>
   </div>
+</div>
 
-  <!-- CLICK EFFECT -->
-  <script>
-    // click audio — may be blocked by browser autoplay policies (plays when user interacts)
-    const clickAudio = new Audio('https://actions.google.com/sounds/v1/interface/click.ogg');
-    document.addEventListener('click', (e) => {
-      // play sound if allowed
-      try { clickAudio.currentTime = 0; clickAudio.play().catch(()=>{}); } catch(_) {}
-      // visual circle
-      const c = document.createElement('div');
-      c.id = 'click-effect';
-      c.style.left = e.clientX + 'px';
-      c.style.top = e.clientY + 'px';
-      document.body.appendChild(c);
-      setTimeout(()=>{ c.remove(); }, 450);
-    });
-  </script>
+<!-- STATUS CARD -->
+<div class="mt-12 bg-gray-900/70 shadow-lg rounded-2xl p-6 max-w-md w-full text-left opacity-0 animate-fadeIn delay-400">
+  <div class="flex items-center justify-between">
+    <h3 class="font-semibold text-gray-100">Current Status</h3>
+    <span class="text-xs bg-accent text-gray-900 px-2 py-1 rounded-full font-medium">In Development</span>
+  </div>
+  <p class="mt-4 text-gray-300 text-sm leading-relaxed">
+    Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
+  </p>
+</div>
 
-  <!-- DEVTOOLS / INSPECTION DETECTION & RESPONSE -->
-  <script>
-  (function () {
-    const SITE_ROOT = document.getElementById('site-root');
+<!-- FEATURES / PLACEHOLDER -->
+<div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl opacity-0 animate-fadeIn delay-600 text-gray-200">
+  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
+    <h4 class="font-semibold mb-2">Fast & Secure</h4>
+    <p>Built with performance and security in mind.</p>
+  </div>
+  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
+    <h4 class="font-semibold mb-2">Clean UI</h4>
+    <p>Modern and intuitive interface for users.</p>
+  </div>
+  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
+    <h4 class="font-semibold mb-2">Continuous Updates</h4>
+    <p>Regular improvements and new features.</p>
+  </div>
+</div>
 
-    // Decoy content to show after detection
-    const decoyHTML = `
-      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;background:linear-gradient(180deg,#091122,#08101a);color:#e6eef8">
-        <div style="max-width:900px;text-align:center">
-          <h1 style="font-size:28px;margin-bottom:8px;color:#ff6b6b">Access Denied</h1>
-          <p style="color:#a9bed6">We detected attempts to inspect this page. Your session is blocked from viewing content.</p>
-          <div style="margin-top:18px;text-align:left">
-            <div style="margin-bottom:8px;font-weight:600">Fake source (decoy)</div>
-            <div class="decoy-pre">
-/* VAZy — decoy code */
-/* If you insist on viewing this page's internals, you have been detected.
-   This is a decoy file with no real functionality. */
-const VAZY = {
-  release: '0.0.0',
-  licenseKey: 'XXXXXXXX-XXXXX-XXXX',
-  internalApi: 'https://api.vazy.example/hidden',
-};
-function doNothing(){ return true; }
-            </div>
-            <p style="margin-top:12px;color:#c7d8ee">Violation logged. If this was a mistake, contact admin: admin@example.com</p>
-          </div>
-        </div>
-      </div>`;
+<!-- FOOTER -->
+<footer class="mt-16 text-gray-400 text-sm border-t border-gray-700 pt-6 w-full max-w-3xl flex flex-col sm:flex-row justify-between items-center gap-3 opacity-0 animate-fadeIn delay-800">
+  <div>© 2025 VAZy — All rights reserved.</div>
+  <div class="flex gap-4">
+    <a href="#" class="hover:text-primary">Twitter</a>
+    <a href="#" class="hover:text-primary">LinkedIn</a>
+    <a href="mailto:vazof21@gmail.com" class="hover:text-primary">Email</a>
+  </div>
+</footer>
 
-    // Replace page with the decoy UI
-    function showDecoy() {
-      try {
-        // stop adding multiple times
-        if (document.body.dataset.decoyShown) return;
-        document.body.dataset.decoyShown = "1";
+<!-- CLICK EFFECT CSS -->
+<style>
+.animate-fadeIn {animation: fadeIn 1s forwards;}
+.delay-200 {animation-delay:0.2s;}
+.delay-400 {animation-delay:0.4s;}
+.delay-600 {animation-delay:0.6s;}
+.delay-800 {animation-delay:0.8s;}
+@keyframes fadeIn {from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);}}
+#click-effect {position:absolute; width:1rem; height:1rem; border-radius:50%; background:white; pointer-events:none; opacity:0.8; transform:translate(-50%, -50%); animation: clickAnim 0.4s forwards;}
+@keyframes clickAnim {0%{transform:translate(-50%,-50%) scale(0.5); opacity:0.8;} 100%{transform:translate(-50%,-50%) scale(2); opacity:0;}}
+</style>
 
-        // Optional: play a warning sound
-        try {
-          const warn = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-          warn.play().catch(()=>{});
-        } catch(e){}
+<!-- CLICK EFFECT JS -->
+<script>
+const clickSound = new Audio('https://freesound.org/data/previews/341/341695_5260875-lq.mp3'); // sample click sound
+document.addEventListener('click', function(e){
+  // play sound
+  clickSound.currentTime = 0;
+  clickSound.play();
+  
+  // create white circle
+  const circle = document.createElement('div');
+  circle.id = 'click-effect';
+  circle.style.left = e.clientX + 'px';
+  circle.style.top = e.clientY + 'px';
+  document.body.appendChild(circle);
+  setTimeout(() => { document.body.removeChild(circle); }, 400);
+});
+</script>
 
-        // Replace content with decoy
-        document.documentElement.style.background = '#05101a';
-        document.body.innerHTML = decoyHTML;
-        document.body.style.overflow = 'hidden';
-      } catch (e) {
-        // best effort
-        console.warn('Decoy show failed', e);
-      }
-    }
-
-    // Heuristics for DevTools detection:
-    // 1) keyboard shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+U)
-    // 2) right-click contextmenu
-    // 3) window size differences (outer - inner)
-    // 4) timing trick using debugger to detect pause (not always reliable)
-    let devtoolsOpen = false;
-    const sizeThreshold = 160; // px difference threshold
-
-    // keyboard shortcuts
-    window.addEventListener('keydown', (e) => {
-      const key = e.key.toLowerCase();
-      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (key === 'i' || key === 'c')) || (e.ctrlKey && key === 'u')) {
-        e.preventDefault();
-        e.stopPropagation();
-        showDecoy();
-      }
-    }, {capture:true});
-
-    // right click
-    window.addEventListener('contextmenu', (e) => {
-      // prevent devs from using right-click inspect option
-      e.preventDefault();
-      e.stopPropagation();
-      // show quick warning overlay then decoy
-      showDecoy();
-    }, {capture:true});
-
-    // visual viewport check (outer - inner)
-    let lastCheck = Date.now();
-    function checkSizes() {
-      try {
-        const ow = window.outerWidth || 0;
-        const iw = window.innerWidth || 0;
-        const oh = window.outerHeight || 0;
-        const ih = window.innerHeight || 0;
-        if ( (ow - iw > sizeThreshold) || (oh - ih > sizeThreshold) ) {
-          showDecoy();
-        }
-      } catch(e){}
-    }
-    const sizeInterval = setInterval(checkSizes, 700);
-
-    // extra attempt: detect if console is opened by measuring time spent in a debugger statement
-    // (this is a weak heuristic and can be noisy; we attempt a safe version)
-    let last = Date.now();
-    setInterval(function(){
-      const start = Date.now();
-      // tight loop used as a heuristic - if the browser is paused (devtools), the timing will spike
-      for (let i=0;i<100000;i++) { /* noop */ }
-      const duration = Date.now() - start;
-      if (duration > 200) { // threshold when DevTools paused or heavy inspection is happening
-        showDecoy();
-      }
-      last = Date.now();
-    }, 2000);
-
-    // Prevent some inspector popup attempts by overriding toString of functions (non-destructive)
-    try {
-      // make console.log slightly less informative for casual snoopers (no harm)
-      const originalLog = console.log;
-      console.log = function() {
-        originalLog('[console disabled]');
-      };
-    } catch(e){}
-
-    // clean up on unload
-    window.addEventListener('beforeunload', () => {
-      clearInterval(sizeInterval);
-    });
-  })();
-  </script>
-
-  <!-- small note to user in case they have disabled JS -->
-  <noscript>
-    <div style="position:fixed;left:10px;bottom:10px;background:#ffecb3;color:#332; padding:10px;border-radius:6px;">
-      JavaScript is required to interact with this page. Please enable JavaScript for the best experience.
-    </div>
-  </noscript>
 </body>
-  </html>
+</html>
+
   

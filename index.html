@@ -1,143 +1,280 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My IP & Location</title>
+/*
+WeatherChannelPage.jsx — Autocomplete + Global Search Upgrade
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+e2jvH6fYq9r3gq4jv+F3oY+6k0kqKkT1f8g9x2vM="
-    crossorigin=""
-  />
+What's new:
+- Global autocomplete powered by Nominatim (OpenStreetMap) — covers countries, cities, towns, historic districts, landmarks, etc.
+- Debounced search with keyboard navigation and selection
+- Local caching (localStorage) for fast repeated lookups
+- Graceful fallback and error handling
+- Same dark glassy UI and rain animation
 
-  <style>
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      margin: 0;
-      padding: 1rem;
-      background: #f8fafc;
-      color: #111;
+Drop into a React app (Tailwind recommended). No API keys required — fully free & open-source.
+*/
+
+import React, { useEffect, useState, useRef } from 'react';
+
+const NOMINATIM_BASE = 'https://nominatim.openstreetmap.org/search';
+
+export default function WeatherChannelPage() {
+  const [coords, setCoords] = useState(null);
+  const [place, setPlace] = useState(null);
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [query, setQuery] = useState('');
+  const [unit, setUnit] = useState('C');
+
+  // Autocomplete state
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlight, setHighlight] = useState(-1);
+  const acAbortRef = useRef(null);
+  const debounceRef = useRef(null);
+
+  // Local cache for place -> lat/lon
+  const cacheKey = 'weatherPlaceCacheV1';
+  const getCache = () => {
+    try {
+      const raw = localStorage.getItem(cacheKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  };
+  const saveCache = (c) => localStorage.setItem(cacheKey, JSON.stringify(c));
+
+  // On mount, try geolocation
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setError('Geolocation not supported — search a place instead.');
+      setLoading(false);
+      return;
     }
-    header { margin-bottom: 1rem; }
-    #map { height: 60vh; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
-    .card { background:white; padding:1rem; border-radius:10px; box-shadow: 0 6px 20px rgba(0,0,0,0.04); margin-bottom:1rem; }
-    .small { font-size:0.9rem; color:#555; }
-    button {
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover { background: #1e50c9; }
-    pre { background:#f1f5f9; padding:0.6rem; border-radius:6px; overflow:auto; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>My IP & Location</h1>
-    <p class="small">
-      This tool shows your public IP and live location directly in your browser.
-      No data is stored or sent anywhere.
-    </p>
-  </header>
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setCoords({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+      },
+      () => {
+        setError('Location permission denied. Please search manually.');
+        setLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, []);
 
-  <div class="card">
-    <p><strong>Public IP:</strong> <span id="ip">Loading...</span></p>
-    <p><strong>Coordinates:</strong> <span id="coords">Not yet available</span></p>
-    <p class="small">
-      When your browser asks for permission to access your location, click <em>Allow</em>.
-    </p>
-    <button id="reloadBtn">Check Again</button>
-  </div>
-
-  <div id="map" class="card"></div>
-
-  <div class="card small">
-    <p><strong>Privacy Notice:</strong></p>
-    <ul>
-      <li>All processing happens in your browser (client-side).</li>
-      <li>Public IP is fetched securely via <code>https://api64.ipify.org</code>.</li>
-      <li>Geolocation requires HTTPS or localhost.</li>
-    </ul>
-  </div>
-
-  <!-- Leaflet JS -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-o9N1jQ2v0g3z1K+8bWkG6r1mK2cQ1Ff6mZ6t2s3U9yk="
-    crossorigin=""
-  ></script>
-
-  <script>
-    const ipEl = document.getElementById("ip");
-    const coordsEl = document.getElementById("coords");
-    const reloadBtn = document.getElementById("reloadBtn");
-
-    // Initialize map
-    const map = L.map("map").setView([20, 0], 2);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(map);
-
-    let marker = null;
-
-    async function fetchIP() {
+  // When coords change, fetch weather and reverse geocode
+  useEffect(() => {
+    if (!coords) return;
+    let mounted = true;
+    async function fetchAll() {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await fetch("https://api64.ipify.org?format=json");
-        const data = await res.json();
-        ipEl.textContent = data.ip || "Unavailable";
-      } catch (e) {
-        ipEl.textContent = "Failed to load IP";
-        console.error(e);
+        // Reverse geocode for friendly place name (Nominatim)
+        const rev = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}`);
+        const revData = await rev.json();
+        if (mounted) setPlace(revData.display_name || `${coords.latitude.toFixed(2)}, ${coords.longitude.toFixed(2)}`);
+
+        // Weather (Open-Meteo)
+        const wResp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`);
+        const wData = await wResp.json();
+        if (mounted) setWeather(wData);
+
+        // cache
+        try {
+          const c = getCache();
+          c[place || `${coords.latitude},${coords.longitude}`] = coords;
+          saveCache(c);
+        } catch(e){}
+
+      } catch (err) {
+        console.error(err);
+        if (mounted) setError('Unable to fetch data.');
+      } finally {
+        if (mounted) setLoading(false);
       }
     }
+    fetchAll();
+    return () => { mounted = false; };
+  }, [coords]);
 
-    function showLocation() {
-      if (!navigator.geolocation) {
-        coordsEl.textContent = "Geolocation not supported by this browser.";
+  // Debounced autocomplete using Nominatim
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (acAbortRef.current) acAbortRef.current.abort();
+    if (!query || query.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      // Check cache first (prefix cache)
+      const c = getCache();
+      const cachedKeys = Object.keys(c).filter(k => k.toLowerCase().includes(query.toLowerCase()));
+      if (cachedKeys.length > 0) {
+        const results = cachedKeys.slice(0,5).map(k => ({ display_name: k, lat: c[k].latitude, lon: c[k].longitude }));
+        setSuggestions(results);
+        setShowSuggestions(true);
         return;
       }
 
-      coordsEl.textContent = "Locating…";
+      acAbortRef.current = new AbortController();
+      const params = new URLSearchParams({ q: query, format: 'json', addressdetails: '1', limit: 8 });
+      try {
+        const res = await fetch(`${NOMINATIM_BASE}?${params.toString()}`, { signal: acAbortRef.current.signal, headers: { 'Accept-Language': 'en' } });
+        const data = await res.json();
+        setSuggestions(data || []);
+        setShowSuggestions(true);
+        setHighlight(-1);
+      } catch (err) {
+        if (err.name !== 'AbortError') console.warn('Autocomplete failed', err);
+      }
+    }, 280); // 280ms debounce
 
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          const acc = pos.coords.accuracy;
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (acAbortRef.current) acAbortRef.current.abort();
+    };
+  }, [query]);
 
-          coordsEl.textContent = `${lat.toFixed(6)}, ${lon.toFixed(6)} (±${Math.round(acc)} m)`;
+  // Handle selecting a suggestion
+  const selectSuggestion = async (s) => {
+    setShowSuggestions(false);
+    setQuery(s.display_name || `${s.lat}, ${s.lon}`);
+    const lat = parseFloat(s.lat);
+    const lon = parseFloat(s.lon);
+    setCoords({ latitude: lat, longitude: lon });
 
-          map.setView([lat, lon], 13);
-          if (marker) marker.setLatLng([lat, lon]);
-          else marker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
-        },
-        err => {
-          console.warn("Location error:", err);
-          if (err.code === 1) coordsEl.textContent = "Permission denied.";
-          else if (err.code === 2) coordsEl.textContent = "Position unavailable.";
-          else if (err.code === 3) coordsEl.textContent = "Request timed out.";
-          else coordsEl.textContent = "Unknown error.";
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
+    // Save into cache for quick lookup
+    try {
+      const c = getCache();
+      c[s.display_name] = { latitude: lat, longitude: lon };
+      saveCache(c);
+    } catch(e){}
+  };
+
+  // Keyboard navigation for suggestions
+  const onKeyDown = (e) => {
+    if (!showSuggestions) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlight(h => Math.min(h + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlight(h => Math.max(h - 1, 0));
+    } else if (e.key === 'Enter') {
+      if (highlight >= 0 && suggestions[highlight]) {
+        e.preventDefault();
+        selectSuggestion(suggestions[highlight]);
+      }
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
     }
+  };
 
-    reloadBtn.addEventListener("click", () => {
-      fetchIP();
-      showLocation();
-    });
+  const toUnit = (tempC) => {
+    if (tempC == null) return '--';
+    return unit === 'C' ? `${Math.round(tempC)}°` : `${Math.round(tempC * 9/5 + 32)}°F`;
+  };
 
-    // Run on load
-    fetchIP();
-    showLocation();
-  </script>
-</body>
-</html>
+  return (
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white p-6 overflow-hidden">
+      {/* Rain layer */}
+      <div className="absolute inset-0 -z-10 opacity-40 pointer-events-none" style={{backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=2 height=14><rect width=2 height=14 fill=\'%23ffffff\' fill-opacity=0.04/></svg>')", backgroundRepeat: 'repeat', backgroundSize: '2px 14px', animation: 'rain 1s linear infinite' }}></div>
+
+      <main className="relative max-w-4xl mx-auto">
+        <header className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-4xl font-bold">WeatherChannel</h1>
+            <p className="text-slate-300 text-sm">{place || (coords ? `${coords.latitude.toFixed(2)}, ${coords.longitude.toFixed(2)}` : 'Detecting location...')}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setUnit(u => u === 'C' ? 'F' : 'C')} className="bg-slate-700/50 px-3 py-1 rounded-md">{unit}</button>
+          </div>
+        </header>
+
+        <section className="mb-6">
+          <div className="relative">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
+              onKeyDown={onKeyDown}
+              onFocus={() => query.length >= 2 && setShowSuggestions(true)}
+              onBlur={() => setTimeout(()=>setShowSuggestions(false), 150)}
+              placeholder="Search country, city, old town, landmark... (e.g. 'Old Town Tallinn')"
+              className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-slate-700 focus:outline-none"
+            />
+
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute z-20 mt-2 w-full max-h-64 overflow-auto rounded-xl bg-slate-800/80 border border-slate-700 p-1">
+                {suggestions.map((s, i) => (
+                  <li
+                    key={`${s.place_id || s.osm_id}-${i}`}
+                    onMouseDown={(ev) => { ev.preventDefault(); selectSuggestion(s); }}
+                    className={`px-3 py-2 rounded-md cursor-pointer hover:bg-slate-700/40 ${i === highlight ? 'bg-slate-700/50' : ''}`}
+                  >
+                    <div className="text-sm font-medium">{s.display_name}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{s.type || (s.class ? `${s.class}` : '')} • {s.address?.country || ''}</div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {showSuggestions && suggestions.length === 0 && query.length >= 2 && (
+              <div className="absolute z-20 mt-2 w-full rounded-xl bg-slate-800/80 border border-slate-700 p-3 text-slate-400">No suggestions found — try a different spelling or include the country.</div>
+            )}
+          </div>
+        </section>
+
+        {error && <div className="mb-4 text-rose-400">{error}</div>}
+
+        <section className="grid grid-cols-1 gap-6">
+          {/* Main current weather card */}
+          <div className="bg-slate-800/60 rounded-2xl p-6 backdrop-blur-md">
+            {loading ? (
+              <div className="text-center text-slate-300 py-12">Loading...</div>
+            ) : weather ? (
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-6xl font-extrabold leading-none">{toUnit(weather.current_weather.temperature)}</div>
+                  <div className="text-slate-300 mt-2">{weather.current_weather.winddirection ? 'Showers' : '—'}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-slate-400">Wind</div>
+                  <div className="text-2xl font-medium">{weather.current_weather.windspeed} km/h</div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-slate-400">No weather data. Search or allow location.</div>
+            )}
+          </div>
+
+          {/* Weekly */}
+          {weather?.daily && (
+            <div className="bg-slate-800/60 rounded-2xl p-6 backdrop-blur-md">
+              <h2 className="text-lg font-semibold mb-3">7-Day Forecast</h2>
+              <div className="space-y-2">
+                {weather.daily.time.map((d, i) => (
+                  <div key={i} className="flex justify-between text-slate-200">
+                    <div>{new Date(d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                    <div className="text-slate-400">{toUnit(weather.daily.temperature_2m_min[i])} / {toUnit(weather.daily.temperature_2m_max[i])}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+
+        <footer className="text-center text-xs text-slate-500 mt-10">Search powered by OpenStreetMap (Nominatim). Covers countries, cities, towns, villages, old towns, and landmarks worldwide • Weather from Open-Meteo</footer>
+      </main>
+
+      <style>{`
+        @keyframes rain {
+          0% { background-position: 0 -10px; }
+          100% { background-position: 0 200px; }
+        }
+      `}</style>
+    </div>
+  );
+}
+      

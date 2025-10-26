@@ -1,120 +1,447 @@
-  <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VAZy – Under Development</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          primary: '#3b82f6',  // blue-600
-          secondary: '#14b8a6', // teal-400
-          accent: '#facc15',    // yellow-400
-        }
-      }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VAZ 2.0 — Documents & Editor (Local Demo)</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JSZip & FileSaver for export/import -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <style>
+    :root {
+      --bg1: #071026;
+      --card: #0f1720;
+      --muted: #94a3b8;
+      --accent1: #8c45ff;
+      --accent2: #d438ff;
     }
-  }
-</script>
+    html,body,#app{height:100%}
+    body{background:linear-gradient(180deg,var(--bg1) 0%, #04060a 100%); color:#e6eef8}
+    .file-row:hover{background:rgba(255,255,255,0.02)}
+    .folder-item:hover{background:rgba(255,255,255,0.02)}
+    .editor-toolbar button{outline: none}
+    .drop-active{outline:3px dashed rgba(140,69,255,0.25)}
+    /* small scrollbar */
+    ::-webkit-scrollbar {height:8px;width:8px}
+    ::-webkit-scrollbar-thumb {background:rgba(255,255,255,0.06);border-radius:8px}
+  </style>
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col items-center justify-center min-h-screen px-6 font-sans overflow-x-hidden relative">
+<body>
+  <div id="app" class="flex h-full">
+    <!-- Sidebar -->
+    <aside class="w-80 p-6 border-r border-gray-800 flex flex-col gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-accent2 to-accent1 flex items-center justify-center font-bold">VZ</div>
+        <div>
+          <div class="font-bold text-lg">VAZ 2.0</div>
+          <div class="text-sm text-gray-400">Docs & Editor (local)</div>
+        </div>
+      </div>
 
-<!-- LOGO / BRAND -->
-<div class="flex items-center gap-3 mb-8 opacity-0 animate-fadeIn">
-  <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-3xl font-bold shadow-lg">V</div>
-  <h1 class="text-4xl font-extrabold tracking-tight">VAZy</h1>
-</div>
+      <div>
+        <label class="block text-sm text-gray-300 mb-2">Upload files</label>
+        <div id="dropzone" class="p-3 rounded-lg bg-[#0b0d12] border border-gray-800 text-sm text-gray-300">
+          Drag & drop files here, or
+          <label for="fileInput" class="text-accent1 underline cursor-pointer"> choose files</label>
+          <input id="fileInput" type="file" multiple class="hidden">
+        </div>
+        <div class="mt-2 text-xs text-gray-500">Previews: PDF, images, text. Files stored locally for the signed-in user.</div>
+      </div>
 
-<!-- MAIN MESSAGE -->
-<div class="max-w-2xl text-center opacity-0 animate-fadeIn delay-200">
-  <h2 class="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
-  <p class="text-gray-300 text-lg leading-relaxed mb-6">
-    We’re building something powerful and elegant — a business platform designed to help you achieve more.<br>
-    Expected launch: <strong>January 2026</strong>
-  </p>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-sm font-semibold">Folders</div>
+          <button id="newFolderBtn" class="text-xs px-2 py-1 rounded bg-gray-800">+ New</button>
+        </div>
+        <div id="foldersList" class="h-40 overflow-y-auto rounded-md border border-gray-800 p-2 bg-[#071428]"></div>
+      </div>
 
-  <!-- NOTIFY FORM -->
-  <form action="https://formspree.io/f/xzzjwnzl" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
-    <input type="email" name="email" required placeholder="Enter your email to get notified" class="px-4 py-3 w-full sm:w-80 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-gray-900 text-gray-100">
-    <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow hover:bg-blue-700 transition">Notify Me</button>
-  </form>
-  <p class="text-green-400 font-medium mt-2 text-center"> You’ll be notified when VAZy launches.</p>
+      <div class="mt-auto space-y-2">
+        <div class="flex gap-2">
+          <button id="exportBtn" class="flex-1 px-3 py-2 rounded bg-accent1 text-black font-semibold">Export Backup</button>
+          <button id="importBtn" class="px-3 py-2 rounded bg-gray-800" title="Import a previous .zip backup">Import</button>
+          <input id="importInput" type="file" accept=".zip" class="hidden">
+        </div>
+        <button id="clearAll" class="w-full px-4 py-2 rounded-lg bg-red-700 text-white">Clear All (local)</button>
+        <div class="text-xs text-gray-500 mt-2">Files are saved locally per user. Clearing removes them.</div>
+      </div>
+    </aside>
 
-  <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-    <a href="mailto:vazof21@gmail.com" class="px-6 py-3 border border-gray-700 rounded-lg hover:bg-gray-700 transition">Contact Us</a>
+    <!-- Main -->
+    <main class="flex-1 p-6">
+      <!-- Topbar -->
+      <header class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+          <h2 class="text-2xl font-bold">My Files</h2>
+          <div class="text-sm text-gray-400">Signed in as <span id="currentUser" class="font-medium">—</span></div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <input id="searchInput" placeholder="Search files or text..." class="px-3 py-2 rounded bg-[#081026] border border-gray-800 text-sm w-64" />
+          <select id="sortSelect" class="px-3 py-2 rounded bg-[#081026] border border-gray-800 text-sm">
+            <option value="updated">Sort: Recent</option>
+            <option value="name">Sort: Name</option>
+            <option value="size">Sort: Size</option>
+          </select>
+          <button id="createBtn" class="px-3 py-2 rounded bg-accent2 text-black font-semibold">+ Create</button>
+          <button id="accountBtn" class="px-3 py-2 rounded border border-gray-700">Account</button>
+        </div>
+      </header>
+
+      <div class="grid grid-cols-4 gap-6">
+        <!-- File list -->
+        <section class="col-span-1 bg-[#071218] rounded-xl p-3 min-h-[520px]">
+          <div id="fileList" class="space-y-2 overflow-y-auto h-[480px]"></div>
+        </section>
+
+        <!-- Editor / Preview -->
+        <section class="col-span-3 bg-card rounded-xl p-4 min-h-[520px] flex flex-col">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex flex-col">
+              <input id="fileTitle" class="text-xl font-semibold bg-transparent outline-none" placeholder="Untitled document" />
+              <div class="text-xs text-gray-400" id="metaInfo">No file selected</div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button id="saveBtn" class="px-3 py-1 rounded bg-accent1 text-black font-semibold">Save</button>
+              <button id="downloadBtn" class="px-3 py-1 rounded bg-accent2 text-black">Download</button>
+              <button id="deleteBtn" class="px-3 py-1 rounded bg-red-600">Delete</button>
+            </div>
+          </div>
+
+          <!-- Editor toolbar -->
+          <div class="editor-toolbar flex gap-2 mb-2">
+            <button data-cmd="bold" class="px-2 py-1 rounded bg-[#081026]">B</button>
+            <button data-cmd="italic" class="px-2 py-1 rounded bg-[#081026]">I</button>
+            <button data-cmd="insertUnorderedList" class="px-2 py-1 rounded bg-[#081026]">• List</button>
+            <button data-cmd="insertOrderedList" class="px-2 py-1 rounded bg-[#081026]">1. List</button>
+            <button id="togglePreview" class="px-2 py-1 rounded bg-[#081026]">Toggle Preview</button>
+          </div>
+
+          <!-- Editor area -->
+          <div id="editorWrapper" class="flex-1 bg-[#05060a] rounded p-3 overflow-auto border border-gray-800">
+            <div id="editor" contenteditable="true" class="w-full h-full prose prose-invert max-w-none text-sm" style="min-height: 360px; outline:none; white-space:pre-wrap;"></div>
+          </div>
+
+          <div class="mt-3 flex items-center justify-between text-xs text-gray-400">
+            <div>Autosave: <span id="autosaveStatus">Idle</span></div>
+            <div>Size: <span id="docSize">0 B</span></div>
+          </div>
+        </section>
+      </div>
+    </main>
   </div>
-</div>
 
-<!-- STATUS CARD -->
-<div class="mt-12 bg-gray-900/70 shadow-lg rounded-2xl p-6 max-w-md w-full text-left opacity-0 animate-fadeIn delay-400">
-  <div class="flex items-center justify-between">
-    <h3 class="font-semibold text-gray-100">Current Status</h3>
-    <span class="text-xs bg-accent text-gray-900 px-2 py-1 rounded-full font-medium">In Development</span>
-  </div>
-  <p class="mt-4 text-gray-300 text-sm leading-relaxed">
-    Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
-  </p>
-</div>
+  <!-- Modals (account, create folder) -->
+  <div id="modalRoot"></div>
 
-<!-- FEATURES / PLACEHOLDER -->
-<div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl opacity-0 animate-fadeIn delay-600 text-gray-200">
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Fast & Secure</h4>
-    <p>Built with performance and security in mind.</p>
-  </div>
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Clean UI</h4>
-    <p>Modern and intuitive interface for users.</p>
-  </div>
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Continuous Updates</h4>
-    <p>Regular improvements and new features.</p>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="mt-16 text-gray-400 text-sm border-t border-gray-700 pt-6 w-full max-w-3xl flex flex-col sm:flex-row justify-between items-center gap-3 opacity-0 animate-fadeIn delay-800">
-  <div>© 2025 VAZy — All rights reserved.</div>
-  <div class="flex gap-4">
-    <a href="#" class="hover:text-primary">Twitter</a>
-    <a href="#" class="hover:text-primary">LinkedIn</a>
-    <a href="mailto:vazof21@gmail.com" class="hover:text-primary">Email</a>
-  </div>
-</footer>
-
-<!-- CLICK EFFECT CSS -->
-<style>
-.animate-fadeIn {animation: fadeIn 1s forwards;}
-.delay-200 {animation-delay:0.2s;}
-.delay-400 {animation-delay:0.4s;}
-.delay-600 {animation-delay:0.6s;}
-.delay-800 {animation-delay:0.8s;}
-@keyframes fadeIn {from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);}}
-#click-effect {position:absolute; width:1rem; height:1rem; border-radius:50%; background:white; pointer-events:none; opacity:0.8; transform:translate(-50%, -50%); animation: clickAnim 0.4s forwards;}
-@keyframes clickAnim {0%{transform:translate(-50%,-50%) scale(0.5); opacity:0.8;} 100%{transform:translate(-50%,-50%) scale(2); opacity:0;}}
-</style>
-
-<!-- CLICK EFFECT JS -->
 <script>
-const clickSound = new Audio('https://freesound.org/data/previews/341/341695_5260875-lq.mp3'); // sample click sound
-document.addEventListener('click', function(e){
-  // play sound
-  clickSound.currentTime = 0;
-  clickSound.play();
-  
-  // create white circle
-  const circle = document.createElement('div');
-  circle.id = 'click-effect';
-  circle.style.left = e.clientX + 'px';
-  circle.style.top = e.clientY + 'px';
-  document.body.appendChild(circle);
-  setTimeout(() => { document.body.removeChild(circle); }, 400);
+/*
+  VAZ 2.0 demo app (local-only)
+  - Users stored in localStorage (demo)
+  - Files stored in IndexedDB; metadata in localStorage per user
+  - Features: create/edit rich text, upload files, preview, versions, folders, search, sort, export/import zip
+*/
+
+// ---------- IndexedDB helpers ----------
+const DB_NAME = 'vaz2_db';
+const STORE = 'files';
+let db;
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r = indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded = ()=> r.result.createObjectStore(STORE,{keyPath:'id'});
+    r.onsuccess = ()=> { db = r.result; res(db); };
+    r.onerror = ()=> rej(r.error);
+  });
+}
+function putBlob(id, blob){
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put({id,blob});
+    tx.oncomplete = ()=> res(); tx.onerror = ()=> rej(tx.error);
+  });
+}
+function getBlob(id){
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(STORE,'readonly'); const rq = tx.objectStore(STORE).get(id);
+    rq.onsuccess = ()=> res(rq.result?.blob);
+    rq.onerror = ()=> rej(rq.error);
+  });
+}
+function deleteBlob(id){
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id);
+    tx.oncomplete = ()=> res(); tx.onerror = ()=> rej(tx.error);
+  });
+}
+async function initDB(){ await openDB(); }
+
+// ---------- User & metadata ----------
+const USERS_KEY = 'vaz2_users';
+function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY)||'{}'); }
+function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+
+// metadata is saved per-user key: vaz2_meta_<username>
+function metaKey(user){ return 'vaz2_meta_' + user; }
+function loadMeta(user){ return JSON.parse(localStorage.getItem(metaKey(user))||'{}'); }
+function saveMeta(user, meta){ localStorage.setItem(metaKey(user), JSON.stringify(meta)); }
+
+// current state
+let currentUser = null;
+let meta = {}; // metadata map
+let currentFileId = null;
+let autosaveTimer = null;
+let isPreviewOn = false;
+
+// ---------- UI refs ----------
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const fileListEl = document.getElementById('fileList');
+const foldersList = document.getElementById('foldersList');
+const searchInput = document.getElementById('searchInput');
+const sortSelect = document.getElementById('sortSelect');
+const createBtn = document.getElementById('createBtn');
+const accountBtn = document.getElementById('accountBtn');
+const newFolderBtn = document.getElementById('newFolderBtn');
+const editorEl = document.getElementById('editor');
+const fileTitle = document.getElementById('fileTitle');
+const saveBtn = document.getElementById('saveBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const deleteBtn = document.getElementById('deleteBtn');
+const metaInfo = document.getElementById('metaInfo');
+const autosaveStatus = document.getElementById('autosaveStatus');
+const docSize = document.getElementById('docSize');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importInput = document.getElementById('importInput');
+const clearAllBtn = document.getElementById('clearAll');
+const currentUserEl = document.getElementById('currentUser');
+const createFolderBtn = document.getElementById('newFolderBtn');
+const togglePreviewBtn = document.getElementById('togglePreview');
+
+// toolbar commands
+document.querySelectorAll('.editor-toolbar [data-cmd]').forEach(btn=>{
+  btn.addEventListener('click', ()=> document.execCommand(btn.dataset.cmd, false, null));
 });
-</script>
+togglePreviewBtn.addEventListener('click', ()=> {
+  isPreviewOn = !isPreviewOn;
+  if(isPreviewOn) { editorEl.setAttribute('contenteditable','false'); togglePreviewBtn.textContent = 'Edit Mode'; }
+  else { editorEl.setAttribute('contenteditable','true'); togglePreviewBtn.textContent = 'Toggle Preview'; }
+});
 
-</body>
-</html>
+// ---------- Utilities ----------
+function uid(){ return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+function fmtBytes(b){ if(!b) return '0 B'; if(b<1024) return b+' B'; if(b<1024*1024) return (b/1024).toFixed(1)+' KB'; return (b/1024/1024).toFixed(2)+' MB'; }
+function now(){ return Date.now(); }
 
-  
+// ---------- Auth (local demo) ----------
+function showAccountModal(){
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+    <div id="modalBack" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div class="bg-[#07141c] p-6 rounded-lg w-[420px]">
+        <h3 class="text-lg font-bold mb-2">Account</h3>
+        <div class="mb-3 text-sm text-gray-300">Sign up or sign in (local demo). This is stored in your browser only.</div>
+        <input id="acctName" placeholder="Username" class="w-full mb-2 p-2 bg-[#071018] rounded border border-gray-800" />
+        <input id="acctPass" type="password" placeholder="Password" class="w-full mb-3 p-2 bg-[#071018] rounded border border-gray-800" />
+        <div class="flex gap-2">
+          <button id="acctSignUp" class="flex-1 px-3 py-2 rounded bg-accent1 text-black font-semibold">Sign up</button>
+          <button id="acctSignIn" class="flex-1 px-3 py-2 rounded bg-gray-800">Sign in</button>
+        </div>
+        <div class="text-sm text-gray-400 mt-3">Signed users have separate file spaces.</div>
+        <div class="mt-4 text-right"><button id="acctClose" class="px-3 py-1 rounded bg-gray-700">Close</button></div>
+      </div>
+    </div>
+  `;
+  document.getElementById('acctClose').onclick = ()=> root.innerHTML='';
+  document.getElementById('acctSignUp').onclick = ()=>{
+    const u = document.getElementById('acctName').value.trim();
+    const p = document.getElementById('acctPass').value;
+    if(!u || !p){ alert('enter username & password'); return; }
+    const users = getUsers();
+    if(users[u]){ alert('username exists — choose sign in'); return; }
+    users[u] = {pw: btoa(p)}; saveUsers(users);
+    root.innerHTML='';
+    signIn(u);
+  };
+  document.getElementById('acctSignIn').onclick = ()=>{
+    const u = document.getElementById('acctName').value.trim();
+    const p = document.getElementById('acctPass').value;
+    const users = getUsers();
+    if(!users[u] || users[u].pw !== btoa(p)){ alert('invalid credentials'); return; }
+    root.innerHTML='';
+    signIn(u);
+  };
+}
+accountBtn.addEventListener('click', showAccountModal);
+
+// sign in sets currentUser and loads meta
+function signIn(user){
+  currentUser = user;
+  currentUserEl.textContent = user;
+  meta = loadMeta(user);
+  if(!meta) meta = {};
+  renderFolders();
+  renderFileList();
+}
+
+// auto sign in demo: if a user exists in storage, sign in the first one
+window.addEventListener('load', async ()=>{
+  await initDB();
+  const u = Object.keys(getUsers())[0];
+  if(u) signIn(u);
+  else {
+    // create demo user
+    const users = getUsers();
+    users['demo'] = {pw: btoa('demo')}; saveUsers(users);
+    signIn('demo');
+  }
+});
+
+// ---------- File & Folder logic ----------
+function saveFileMetadata(){
+  if(!currentUser) return;
+  saveMeta(currentUser, meta);
+}
+
+function renderFileList(){
+  fileListEl.innerHTML = '';
+  const files = Object.values(meta).filter(m => !m.isFolder).slice();
+  // search & sort
+  const q = (searchInput.value || '').toLowerCase();
+  const sort = sortSelect.value;
+  let out = files.filter(m => {
+    if(!q) return true;
+    return m.name.toLowerCase().includes(q) || (m.content && m.content.toLowerCase().includes(q)) || (m.tags && m.tags.join(' ').toLowerCase().includes(q));
+  });
+  if(sort === 'updated') out.sort((a,b)=>b.updated - a.updated);
+  if(sort === 'name') out.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sort === 'size') out.sort((a,b)=> (b.size||0) - (a.size||0));
+
+  if(out.length===0) fileListEl.innerHTML = '<div class="text-gray-500 text-sm p-3">No files. Create or upload one.</div>';
+  out.forEach(m=>{
+    const el = document.createElement('div');
+    el.className = 'p-2 rounded file-row cursor-pointer flex items-center gap-3';
+    el.innerHTML = `<div class="flex-1"><div class="font-medium">${m.name}</div><div class="text-xs text-gray-400">${m.versions?.length||1} version(s) • ${new Date(m.updated).toLocaleString()}</div></div><div class="text-xs text-gray-400">${fmtBytes(m.size)}</div>`;
+    el.onclick = ()=> loadFile(m.id);
+    fileListEl.appendChild(el);
+  });
+  renderFolders();
+  saveFileMetadata();
+}
+
+function renderFolders(){
+  foldersList.innerHTML = '';
+  const folders = Object.values(meta).filter(m=>m.isFolder).sort((a,b)=>a.updated - b.updated);
+  if(folders.length===0) foldersList.innerHTML = '<div class="text-gray-500 text-sm p-2">No folders</div>';
+  for(const f of folders){
+    const d = document.createElement('div'); d.className = 'p-2 rounded folder-item cursor-pointer flex items-center justify-between';
+    d.innerHTML = `<div>${f.name}</div><div class="text-xs text-gray-400">${Object.values(meta).filter(x=>x.parent===f.id && !x.isFolder).length}</div>`;
+    d.onclick = ()=> { /* future: filter by folder */ alert('Folder click — future feature'); };
+    foldersList.appendChild(d);
+  }
+}
+
+// create new text doc
+createBtn.addEventListener('click', ()=>{
+  if(!currentUser){ alert('sign in first'); return; }
+  const id = uid();
+  meta[id] = { id, name: 'Untitled.txt', created: now(), updated: now(), versions: [], size:0, isFolder:false, parent:null, tags:[], content: '' };
+  currentFileId = id;
+  renderFileList();
+  loadFile(id);
+  saveFileMetadata();
+});
+
+// new folder
+createFolderBtn.addEventListener('click', ()=>{
+  const name = prompt('Folder name'); if(!name) return;
+  const id = uid();
+  meta[id] = { id, name, created: now(), updated: now(), isFolder:true };
+  renderFolders(); saveFileMetadata();
+});
+
+// upload files (file input + drag) -> save blobs and metadata
+fileInput.addEventListener('change', async (e)=>{
+  const files = Array.from(e.target.files || []);
+  await handleFiles(files);
+  fileInput.value = '';
+});
+['dragenter','dragover'].forEach(ev=> dropzone.addEventListener(ev,e=>{ e.preventDefault(); dropzone.classList.add('drop-active'); }));
+['dragleave','drop'].forEach(ev=> dropzone.addEventListener(ev,e=>{ e.preventDefault(); dropzone.classList.remove('drop-active'); }));
+dropzone.addEventListener('drop', async (e)=>{ const files = Array.from(e.dataTransfer.files || []); await handleFiles(files); });
+
+async function handleFiles(files){
+  if(!currentUser) { alert('Sign in first'); return; }
+  for(const f of files){
+    // create meta entry
+    const id = uid();
+    const vid = uid();
+    meta[id] = {
+      id, name: f.name, created: now(), updated: now(), versions: [{id:vid, date:now(), size: f.size}], size: f.size,
+      isFolder:false, tags:[], parent:null, uploader: currentUser
+    };
+    await putBlob(vid, f);
+  }
+  saveFileMetadata();
+  renderFileList();
+}
+
+// load file for viewing/editing (if created locally, we store content in meta.content)
+async function loadFile(id){
+  currentFileId = id;
+  const m = meta[id];
+  fileTitle.value = m.name;
+  metaInfo.textContent = `Updated: ${new Date(m.updated).toLocaleString()} • ${m.versions?.length||1} version(s)`;
+  // if has stored content (created in editor)
+  if(m.content !== undefined){
+    editorEl.innerHTML = m.content || '';
+    updateDocSize();
+    return;
+  }
+  // otherwise load blob latest
+  const latest = m.versions[m.versions.length-1];
+  const blob = await getBlob(latest.id);
+  if(!blob){ editorEl.innerHTML = '<div class="text-gray-400">No preview available</div>'; updateDocSize(); return; }
+  const type = blob.type || '';
+  if(type.startsWith('image/')){
+    editorEl.innerHTML = `<img src="${URL.createObjectURL(blob)}" class="max-w-full" />`;
+  } else if(type==='application/pdf' || m.name.toLowerCase().endsWith('.pdf')){
+    editorEl.innerHTML = `<iframe src="${URL.createObjectURL(blob)}" class="w-full h-[420px] border-0"></iframe>`;
+  } else if(type.startsWith('text/') || /\\.(txt|md|json|csv)$/i.test(m.name)){
+    const t = await blob.text();
+    editorEl.textContent = t;
+  } else {
+    editorEl.innerHTML = `<div class="p-4">No inline preview. Use Download to save file.</div>`;
+  }
+  updateDocSize();
+}
+
+// Save file (from editor) -> create or update metadata and store blob
+saveBtn.addEventListener('click', async ()=>{
+  if(!currentUser){ alert('Sign in first'); return; }
+  if(!currentFileId){ // new
+    const id = uid(); currentFileId = id;
+    meta[id] = { id, name: fileTitle.value || 'Untitled.txt', created: now(), updated: now(), versions: [], size:0, content:'', tags:[], isFolder:false, parent:null, uploader: currentUser };
+  }
+  const m = meta[currentFileId];
+  m.name = fileTitle.value || m.name;
+  // capture content from editor as HTML (rich) and also as plain text for search
+  const html = editorEl.innerHTML;
+  const txt = editorEl.innerText || editorEl.textContent || '';
+  m.content = html;
+  m.updated = now();
+  m.size = new Blob([html]).size;
+  // create a new version blob to store (as .html file)
+  const blob = new Blob([html], {type: 'text/html'});
+  const vid = uid();
+  m.versions = m.versions || [];
+  m.versions.push({id: vid, date: now(), size: blob.size});
+  m.size = blob.size;
+  await putBlob(vid, blob);
+  saveFileMetadata(

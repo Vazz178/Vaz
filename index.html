@@ -10,27 +10,24 @@
 <style>
 .animate-fadeIn {animation: fadeIn 1s forwards;}
 .delay-200 {animation-delay:0.2s;}
-.delay-400 {animation-delay:0.4s;}
-.delay-600 {animation-delay:0.6s;}
-.delay-800 {animation-delay:0.8s;}
 @keyframes fadeIn {from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);}}
 </style>
 
 <body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 min-h-screen">
 
-<!-- ================= LOGIN SCREEN ================ -->
+<!-- ================= LOGIN SCREEN ================= -->
 <div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen px-6">
   <div class="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-sm">
     <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
 
     <input id="loginUser" type="text" placeholder="Username" class="mb-3 p-3 w-full bg-gray-900 rounded-lg">
     <input id="loginPass" type="password" placeholder="Password" class="mb-3 p-3 w-full bg-gray-900 rounded-lg">
-    
+
     <button id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold">
       Log In
     </button>
 
-    <div id="adminCreateSection" class="mt-4 text-center hidden">
+    <div id="adminCreateSection" class="mt-4 text-center">
       <button id="createAdminBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 p-2 rounded-md font-bold">
         Create Admin Account
       </button>
@@ -40,64 +37,83 @@
   </div>
 </div>
 
+<!-- ================= MAIN SITE CONTENT ================= -->
+<div id="mainContent" class="hidden min-h-screen">
 
-<!-- ================= SITE CONTENT ================ -->
-<div id="siteContent" class="hidden">
+  <!-- ADMIN MENU -->
+  <div id="adminMenu" class="hidden fixed top-0 left-0 w-full bg-black/90 text-white p-4 flex justify-between shadow-xl z-50 border-b border-gray-700">
+    <span class="font-bold text-lg text-yellow-400">⚙️ ADMIN PANEL</span>
 
-<!-- ================= ADMIN MENU BAR ================ -->
-<div id="adminMenu" class="hidden fixed top-0 left-0 w-full bg-black/90 text-white p-4 flex justify-between shadow-xl z-50 border-b border-gray-700">
-  <span class="font-bold text-lg text-yellow-400">⚙️ ADMIN PANEL</span>
-
-  <div class="flex gap-2 text-sm">
-
-    <button id="dashboardBtn" class="bg-blue-600 px-4 py-2 rounded">Dashboard</button>
-    <button id="usersBtn" class="bg-purple-600 px-4 py-2 rounded">Users</button>
-    <button id="logBtn" class="bg-amber-500 px-4 py-2 rounded">Logs</button>
-
-    <button id="toggleSiteBtn" class="bg-red-600 px-4 py-2 rounded">Close Site</button>
-    <button id="maintBtn" class="bg-orange-600 px-4 py-2 rounded">Maintenance OFF</button>
-
-    <button id="clearAllBtn" class="bg-red-700 px-3 py-2 rounded text-xs">Clear Accounts</button>
-    <button id="logoutBtn" class="bg-gray-700 px-4 py-2 rounded">Logout</button>
+    <div class="flex gap-2 text-sm flex-wrap">
+      <button id="dashboardBtn" class="bg-blue-600 px-4 py-2 rounded">Dashboard</button>
+      <button id="usersBtn" class="bg-purple-600 px-4 py-2 rounded">Users</button>
+      <button id="logBtn" class="bg-amber-500 px-4 py-2 rounded">Logs</button>
+      <button id="announceBtn" class="bg-green-600 px-4 py-2 rounded">Announcements</button>
+      <button id="settingsBtn" class="bg-indigo-600 px-4 py-2 rounded">Settings</button>
+      <button id="toggleSiteBtn" class="bg-red-600 px-4 py-2 rounded">Close Site</button>
+      <button id="maintBtn" class="bg-orange-600 px-4 py-2 rounded">Maintenance OFF</button>
+      <button id="clearAllBtn" class="bg-red-700 px-3 py-2 rounded text-xs">Clear All</button>
+      <button id="logoutBtn" class="bg-gray-700 px-4 py-2 rounded">Logout</button>
+    </div>
   </div>
-</div>
 
-<!-- ===== ADMIN WINDOWS ===== -->
-<div id="adminWindows"></div>
+  <!-- MAIN PAGE AFTER LOGIN -->
+  <div id="pageContent" class="pt-24 text-center px-4">
+    <h1 class="text-5xl font-extrabold mb-2 animate-fadeIn text-yellow-300">VAZy</h1>
+    <p class="text-lg text-gray-300 animate-fadeIn delay-200">🚧 Coming January 2026</p>
 
-<!-- MAIN PAGE CONTENT AFTER LOGIN -->
-<div id="pageContent" class="pt-24 text-center">
-  <h1 class="text-4xl font-extrabold mb-2 animate-fadeIn">VAZy</h1>
-  <p class="text-lg text-gray-300 animate-fadeIn delay-200">🚧 Coming January 2026</p>
-</div>
+    <div id="announcementBox" class="mt-6 text-xl text-green-400"></div>
+
+    <!-- USER DASHBOARD SECTION -->
+    <div id="userDashboard" class="hidden mt-12 bg-gray-800/70 p-6 rounded-2xl max-w-md mx-auto shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-blue-400">👤 User Dashboard</h2>
+      <p class="text-gray-200 mb-2"><span class="font-semibold">Username:</span> <span id="userNameText"></span></p>
+      <p class="text-gray-200 mb-2"><span class="font-semibold">Last Login:</span> <span id="lastLoginText"></span></p>
+      <button id="logoutBtnUser" class="mt-4 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">Logout</button>
+    </div>
+
+    <!-- WELCOME MESSAGE -->
+    <div class="mt-12 text-gray-200">
+      <h2 class="text-2xl font-bold mb-4">Welcome to VAZy</h2>
+      <p class="text-gray-300 max-w-xl mx-auto">
+        This is your main page, visible only after login.  
+        Admins can manage users, announcements, and site state.  
+        Regular users can see announcements and their personal dashboard.
+      </p>
+    </div>
+  </div>
 
 </div>
 
 <script>
 /*** LOCAL STORAGE KEYS:
- admin, adminPass
- user, pass
- loggedIn = "admin" / "user"
- siteClosed = true/false
- maint = true/false
- logs = JSON text
+  admin, adminPass
+  user, pass
+  loggedIn = "admin" / "user"
+  siteClosed = true/false
+  maint = true/false
+  logs = JSON text
+  announcements = string
+  lastLoginUser = date
 ***/
 
+// ==== LOGGER ====
 const log = (txt) => {
   const logs = JSON.parse(localStorage.getItem("logs") || "[]");
-  logs.push(Date.now() + " — " + txt);
+  logs.push(new Date().toLocaleString() + " — " + txt);
   localStorage.setItem("logs", JSON.stringify(logs));
 };
 
-// SHOW admin create if not exists
-if (!localStorage.getItem("admin")) {
-  adminCreateSection.classList.remove("hidden");
+// ==== ADMIN CREATE ====
+if (localStorage.getItem("admin")) {
+  document.getElementById("createAdminBtn").disabled = true;
+  document.getElementById("createAdminBtn").classList.add("opacity-50","cursor-not-allowed");
 }
 
-// CREATE admin account
 createAdminBtn?.addEventListener("click", () => {
-  const u = prompt("Admin username:");
-  const p = prompt("Admin password:");
+  if (localStorage.getItem("admin")) return alert("Admin already exists!");
+  const u = prompt("Set Admin username:");
+  const p = prompt("Set Admin password:");
   if (!u || !p) return alert("Need both!");
   localStorage.setItem("admin", u);
   localStorage.setItem("adminPass", p);
@@ -106,47 +122,71 @@ createAdminBtn?.addEventListener("click", () => {
   location.reload();
 });
 
-// LOGIN handler
+// ==== LOGIN ====
 loginBtn.onclick = () => {
-  const u = loginUser.value, p = loginPass.value;
+  const u = loginUser.value.trim(), p = loginPass.value.trim();
+  if (!u || !p) return (loginMsg.textContent = "Enter username and password!");
 
-  // ADMIN LOGIN
+  // Admin login
   if (u === localStorage.getItem("admin") && p === localStorage.getItem("adminPass")) {
     localStorage.setItem("loggedIn","admin");
-    log(`Admin logged in`);
-    location.reload(); return;
+    log("Admin logged in");
+    location.reload();
+    return;
   }
 
-  // USER LOGIN (AUTO CREATE FIRST USER)
+  // User login (auto create)
   if (!localStorage.getItem("user")) {
     localStorage.setItem("user", u);
     localStorage.setItem("pass", p);
+    log("User created");
   }
 
   if (u === localStorage.getItem("user") && p === localStorage.getItem("pass")) {
     localStorage.setItem("loggedIn","user");
+    localStorage.setItem("lastLoginUser", new Date().toLocaleString());
+    log("User logged in");
     location.reload();
-  } else loginMsg.textContent = "❌ Wrong credentials";
+  } else {
+    loginMsg.textContent = "❌ Wrong credentials";
+  }
 };
 
-// STATE on load
+// ==== LOAD ====
 function load() {
   const role = localStorage.getItem("loggedIn");
   const closed = localStorage.getItem("siteClosed") === "true";
   const maint = localStorage.getItem("maint") === "true";
 
-  if (!role) return;
+  // if not logged in → only login screen
+  if (!role) {
+    loginScreen.classList.remove("hidden");
+    mainContent.classList.add("hidden");
+    return;
+  }
 
+  // logged in → show main page
   loginScreen.classList.add("hidden");
-  siteContent.classList.remove("hidden");
+  mainContent.classList.remove("hidden");
+
+  // Announcements
+  const ann = localStorage.getItem("announcements");
+  if (ann) announcementBox.textContent = "📢 " + ann;
 
   if (role === "admin") {
     adminMenu.classList.remove("hidden");
     maintBtn.textContent = maint ? "Maintenance ON" : "Maintenance OFF";
   }
 
+  // USER dashboard
+  if (role === "user") {
+    document.getElementById("userDashboard").classList.remove("hidden");
+    document.getElementById("userNameText").textContent = localStorage.getItem("user");
+    document.getElementById("lastLoginText").textContent = localStorage.getItem("lastLoginUser") || "First time!";
+  }
+
   if (closed && role !== "admin") {
-    document.body.innerHTML = "<div class='text-center mt-48 text-3xl'>🚫 Site is closed by Admin</div>";
+    document.body.innerHTML = "<div class='text-center mt-48 text-3xl'>🚫 Site closed by Admin</div>";
   }
 
   if (maint && role !== "admin") {
@@ -155,42 +195,45 @@ function load() {
 }
 load();
 
-
-// ===== Buttons =====
+// ==== BUTTONS ====
 logoutBtn?.addEventListener("click",()=>{ localStorage.removeItem("loggedIn"); location.reload(); });
+document.getElementById("logoutBtnUser")?.addEventListener("click",()=>{ localStorage.removeItem("loggedIn"); location.reload(); });
 
 toggleSiteBtn?.addEventListener("click",()=>{
   const cur = localStorage.getItem("siteClosed")==="true";
   localStorage.setItem("siteClosed", !cur);
-  log("Toggled Site");
+  log("Toggled site");
   location.reload();
 });
-
 maintBtn?.addEventListener("click",()=>{
   const cur = localStorage.getItem("maint")==="true";
   localStorage.setItem("maint", !cur);
   log("Maintenance toggled");
   location.reload();
 });
-
-// USERS window
 usersBtn?.addEventListener("click",()=>{
-  alert(`👤 Users:\nUser: ${localStorage.getItem("user")}\nAdmin: ${localStorage.getItem("admin")}`);
+  alert(`👤 USERS:\nUser: ${localStorage.getItem("user")}\nAdmin: ${localStorage.getItem("admin")}`);
 });
-
-// LOGS window
 logBtn?.addEventListener("click",()=>{
-  alert("Admin Logs:\n\n" + (JSON.parse(localStorage.getItem("logs")||"[]").join("\n")));
+  alert("🗒️ Logs:\n\n" + (JSON.parse(localStorage.getItem("logs")||"[]").join("\n")));
 });
-
-// DASHBOARD window
 dashboardBtn?.addEventListener("click",()=>{
-  alert("📊 Admin Dashboard Coming Soon");
+  alert("📊 Dashboard Coming Soon!");
 });
-
-// CLEAR ALL
+announceBtn?.addEventListener("click",()=>{
+  const newAnn = prompt("Enter announcement text:");
+  if (newAnn !== null) {
+    localStorage.setItem("announcements", newAnn);
+    log("Announcement updated");
+    alert("📢 Announcement set!");
+    location.reload();
+  }
+});
+settingsBtn?.addEventListener("click",()=>{
+  alert("⚙️ Settings Coming Soon!");
+});
 clearAllBtn?.addEventListener("click",()=>{
-  if(confirm("⚠️ DELETE ALL accounts and settings?")){
+  if(confirm("⚠️ DELETE ALL accounts, logs, settings?")){
     localStorage.clear();
     location.reload();
   }

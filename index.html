@@ -1,90 +1,12 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VAZy – Under Development</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          primary: '#3b82f6',  // blue-600
-          secondary: '#14b8a6', // teal-400
-          accent: '#facc15',    // yellow-400
-        }
-      }
-    }
-  }
-</script>
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 flex flex-col items-center justify-center min-h-screen px-6 font-sans overflow-x-hidden relative">
 
-<!-- LOGO / BRAND -->
-<div class="flex items-center gap-3 mb-8 opacity-0 animate-fadeIn">
-  <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-3xl font-bold shadow-lg">V</div>
-  <h1 class="text-4xl font-extrabold tracking-tight">VAZy</h1>
-</div>
-
-<!-- MAIN MESSAGE -->
-<div class="max-w-2xl text-center opacity-0 animate-fadeIn delay-200">
-  <h2 class="text-4xl font-bold mb-4">Our Website Is Currently Under Development</h2>
-  <p class="text-gray-300 text-lg leading-relaxed mb-6">
-    We’re building something powerful and elegant — a business platform designed to help you achieve more.<br>
-    Expected launch: <strong>January 2026</strong>
-  </p>
-
-  <!-- NOTIFY FORM -->
-  <form action="https://formspree.io/f/xzzjwnzl" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
-    <input type="email" name="email" required placeholder="Enter your email to get notified" class="px-4 py-3 w-full sm:w-80 border border-gray-700 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-gray-900 text-gray-100">
-    <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow hover:bg-blue-700 transition">Notify Me</button>
-  </form>
-  <p class="text-green-400 font-medium mt-2 text-center"> You’ll be notified when VAZy launches.</p>
-
-  <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-    <a href="mailto:vazof21@gmail.com" class="px-6 py-3 border border-gray-700 rounded-lg hover:bg-gray-700 transition">Contact Us</a>
-  </div>
-</div>
-
-<!-- STATUS CARD -->
-<div class="mt-12 bg-gray-900/70 shadow-lg rounded-2xl p-6 max-w-md w-full text-left opacity-0 animate-fadeIn delay-400">
-  <div class="flex items-center justify-between">
-    <h3 class="font-semibold text-gray-100">Current Status</h3>
-    <span class="text-xs bg-accent text-gray-900 px-2 py-1 rounded-full font-medium">In Development</span>
-  </div>
-  <p class="mt-4 text-gray-300 text-sm leading-relaxed">
-    Our team is working hard on core features, UI design, and backend infrastructure. Launching <strong>January 2026</strong>.
-  </p>
-</div>
-
-<!-- FEATURES / PLACEHOLDER -->
-<div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl opacity-0 animate-fadeIn delay-600 text-gray-200">
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Fast & Secure</h4>
-    <p>Built with performance and security in mind.</p>
-  </div>
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Clean UI</h4>
-    <p>Modern and intuitive interface for users.</p>
-  </div>
-  <div class="bg-gray-900/60 p-4 rounded-lg shadow hover:bg-gray-800 transition">
-    <h4 class="font-semibold mb-2">Continuous Updates</h4>
-    <p>Regular improvements and new features.</p>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="mt-16 text-gray-400 text-sm border-t border-gray-700 pt-6 w-full max-w-3xl flex flex-col sm:flex-row justify-between items-center gap-3 opacity-0 animate-fadeIn delay-800">
-  <div>© 2025 VAZy — All rights reserved.</div>
-  <div class="flex gap-4">
-    <a href="#" class="hover:text-primary">Twitter</a>
-    <a href="#" class="hover:text-primary">LinkedIn</a>
-    <a href="mailto:vazof21@gmail.com" class="hover:text-primary">Email</a>
-  </div>
-</footer>
-
-<!-- CLICK EFFECT CSS -->
 <style>
 .animate-fadeIn {animation: fadeIn 1s forwards;}
 .delay-200 {animation-delay:0.2s;}
@@ -92,29 +14,188 @@
 .delay-600 {animation-delay:0.6s;}
 .delay-800 {animation-delay:0.8s;}
 @keyframes fadeIn {from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);}}
-#click-effect {position:absolute; width:1rem; height:1rem; border-radius:50%; background:white; pointer-events:none; opacity:0.8; transform:translate(-50%, -50%); animation: clickAnim 0.4s forwards;}
-@keyframes clickAnim {0%{transform:translate(-50%,-50%) scale(0.5); opacity:0.8;} 100%{transform:translate(-50%,-50%) scale(2); opacity:0;}}
 </style>
 
-<!-- CLICK EFFECT JS -->
+<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 min-h-screen">
+
+<!-- ================= LOGIN SCREEN ================ -->
+<div id="loginScreen" class="flex flex-col items-center justify-center min-h-screen px-6">
+  <div class="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-sm">
+    <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+
+    <input id="loginUser" type="text" placeholder="Username" class="mb-3 p-3 w-full bg-gray-900 rounded-lg">
+    <input id="loginPass" type="password" placeholder="Password" class="mb-3 p-3 w-full bg-gray-900 rounded-lg">
+    
+    <button id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold">
+      Log In
+    </button>
+
+    <div id="adminCreateSection" class="mt-4 text-center hidden">
+      <button id="createAdminBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 p-2 rounded-md font-bold">
+        Create Admin Account
+      </button>
+    </div>
+
+    <p id="loginMsg" class="text-red-400 text-center mt-3"></p>
+  </div>
+</div>
+
+
+<!-- ================= SITE CONTENT ================ -->
+<div id="siteContent" class="hidden">
+
+<!-- ================= ADMIN MENU BAR ================ -->
+<div id="adminMenu" class="hidden fixed top-0 left-0 w-full bg-black/90 text-white p-4 flex justify-between shadow-xl z-50 border-b border-gray-700">
+  <span class="font-bold text-lg text-yellow-400">⚙️ ADMIN PANEL</span>
+
+  <div class="flex gap-2 text-sm">
+
+    <button id="dashboardBtn" class="bg-blue-600 px-4 py-2 rounded">Dashboard</button>
+    <button id="usersBtn" class="bg-purple-600 px-4 py-2 rounded">Users</button>
+    <button id="logBtn" class="bg-amber-500 px-4 py-2 rounded">Logs</button>
+
+    <button id="toggleSiteBtn" class="bg-red-600 px-4 py-2 rounded">Close Site</button>
+    <button id="maintBtn" class="bg-orange-600 px-4 py-2 rounded">Maintenance OFF</button>
+
+    <button id="clearAllBtn" class="bg-red-700 px-3 py-2 rounded text-xs">Clear Accounts</button>
+    <button id="logoutBtn" class="bg-gray-700 px-4 py-2 rounded">Logout</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN WINDOWS ===== -->
+<div id="adminWindows"></div>
+
+<!-- MAIN PAGE CONTENT AFTER LOGIN -->
+<div id="pageContent" class="pt-24 text-center">
+  <h1 class="text-4xl font-extrabold mb-2 animate-fadeIn">VAZy</h1>
+  <p class="text-lg text-gray-300 animate-fadeIn delay-200">🚧 Coming January 2026</p>
+</div>
+
+</div>
+
 <script>
-const clickSound = new Audio('https://freesound.org/data/previews/341/341695_5260875-lq.mp3'); // sample click sound
-document.addEventListener('click', function(e){
-  // play sound
-  clickSound.currentTime = 0;
-  clickSound.play();
-  
-  // create white circle
-  const circle = document.createElement('div');
-  circle.id = 'click-effect';
-  circle.style.left = e.clientX + 'px';
-  circle.style.top = e.clientY + 'px';
-  document.body.appendChild(circle);
-  setTimeout(() => { document.body.removeChild(circle); }, 400);
+/*** LOCAL STORAGE KEYS:
+ admin, adminPass
+ user, pass
+ loggedIn = "admin" / "user"
+ siteClosed = true/false
+ maint = true/false
+ logs = JSON text
+***/
+
+const log = (txt) => {
+  const logs = JSON.parse(localStorage.getItem("logs") || "[]");
+  logs.push(Date.now() + " — " + txt);
+  localStorage.setItem("logs", JSON.stringify(logs));
+};
+
+// SHOW admin create if not exists
+if (!localStorage.getItem("admin")) {
+  adminCreateSection.classList.remove("hidden");
+}
+
+// CREATE admin account
+createAdminBtn?.addEventListener("click", () => {
+  const u = prompt("Admin username:");
+  const p = prompt("Admin password:");
+  if (!u || !p) return alert("Need both!");
+  localStorage.setItem("admin", u);
+  localStorage.setItem("adminPass", p);
+  log("Admin Created");
+  alert("✅ Admin created!");
+  location.reload();
+});
+
+// LOGIN handler
+loginBtn.onclick = () => {
+  const u = loginUser.value, p = loginPass.value;
+
+  // ADMIN LOGIN
+  if (u === localStorage.getItem("admin") && p === localStorage.getItem("adminPass")) {
+    localStorage.setItem("loggedIn","admin");
+    log(`Admin logged in`);
+    location.reload(); return;
+  }
+
+  // USER LOGIN (AUTO CREATE FIRST USER)
+  if (!localStorage.getItem("user")) {
+    localStorage.setItem("user", u);
+    localStorage.setItem("pass", p);
+  }
+
+  if (u === localStorage.getItem("user") && p === localStorage.getItem("pass")) {
+    localStorage.setItem("loggedIn","user");
+    location.reload();
+  } else loginMsg.textContent = "❌ Wrong credentials";
+};
+
+// STATE on load
+function load() {
+  const role = localStorage.getItem("loggedIn");
+  const closed = localStorage.getItem("siteClosed") === "true";
+  const maint = localStorage.getItem("maint") === "true";
+
+  if (!role) return;
+
+  loginScreen.classList.add("hidden");
+  siteContent.classList.remove("hidden");
+
+  if (role === "admin") {
+    adminMenu.classList.remove("hidden");
+    maintBtn.textContent = maint ? "Maintenance ON" : "Maintenance OFF";
+  }
+
+  if (closed && role !== "admin") {
+    document.body.innerHTML = "<div class='text-center mt-48 text-3xl'>🚫 Site is closed by Admin</div>";
+  }
+
+  if (maint && role !== "admin") {
+    document.body.innerHTML = "<div class='text-center mt-48 text-3xl'>🛠️ Maintenance Mode</div>";
+  }
+}
+load();
+
+
+// ===== Buttons =====
+logoutBtn?.addEventListener("click",()=>{ localStorage.removeItem("loggedIn"); location.reload(); });
+
+toggleSiteBtn?.addEventListener("click",()=>{
+  const cur = localStorage.getItem("siteClosed")==="true";
+  localStorage.setItem("siteClosed", !cur);
+  log("Toggled Site");
+  location.reload();
+});
+
+maintBtn?.addEventListener("click",()=>{
+  const cur = localStorage.getItem("maint")==="true";
+  localStorage.setItem("maint", !cur);
+  log("Maintenance toggled");
+  location.reload();
+});
+
+// USERS window
+usersBtn?.addEventListener("click",()=>{
+  alert(`👤 Users:\nUser: ${localStorage.getItem("user")}\nAdmin: ${localStorage.getItem("admin")}`);
+});
+
+// LOGS window
+logBtn?.addEventListener("click",()=>{
+  alert("Admin Logs:\n\n" + (JSON.parse(localStorage.getItem("logs")||"[]").join("\n")));
+});
+
+// DASHBOARD window
+dashboardBtn?.addEventListener("click",()=>{
+  alert("📊 Admin Dashboard Coming Soon");
+});
+
+// CLEAR ALL
+clearAllBtn?.addEventListener("click",()=>{
+  if(confirm("⚠️ DELETE ALL accounts and settings?")){
+    localStorage.clear();
+    location.reload();
+  }
 });
 </script>
 
 </body>
 </html>
-
-  
